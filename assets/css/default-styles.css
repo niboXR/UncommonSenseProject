@@ -16,7 +16,7 @@ body {
     footer {
         background-color: #5D7E6A; /* Set background color of footer to match body*/
         height: 35px;
-        position: absolute;
+        position: relative;
         bottom: 0;
         left: 0;
         right: 0;
