@@ -1,80 +1,58 @@
 body {
     margin: 0;
     background-color: #dfe5e1; /* Set background color */
-    font-family: 'Arial', sans-serif; /* Change the font family */
+    font-family: 'Arial', sans-serif; /* Set font family for entire body */
+    display: flex; /* Add this line to use Flexbox layout */
+    flex-direction: column; /* Align items in a column */
+    min-height: 100vh; /* Set minimum height equal to viewport height */
+    padding: 0; /* Remove default padding */
+}
 
-    header {
-        background-color: #5D7E6A; /* Set background color of header */
-        color: #dfe5e1; /* Set color of h1 text to match background */
-        height: 50px; /* Set height of header */
-        display: flex;
-        justify-content: center;
-        align-items: center;
+header {
+    background-color: #5D7E6A;
+    color: #dfe5e1;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-     }
-
-    footer {
-        background-color: #5D7E6A; /* Set background color of footer to match body*/
-        height: 35px;
-        position: relative;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: flex;  /* Add this line */
-        align-items: center;  /* Add this line */
-    }
-            
-    footer p {
-        font-family: 'Arial', sans-serif; /* Change the font family */
-        font-size: 20px; /* Change the font size */
-        color: #dfe5e1; /* Change the text color */
-    }
-
-    a {
-        color: #5D7E6A; /* Sets the text color for links */
-        font-weight: bold; /* Makes the link text bold */
-
-        /* Additional styles */
-        text-decoration: none; /* Removes the underline from links */
-        transition: all 0.3s ease; /* Adds a smooth transition effect to all CSS properties when hovering or focusing on the link */
-
-        &:hover { /* Styles applied when the user mouses over the link */
-            color: #2e4d37; /* Changes the text color to a darker shade on hover */
-        }
-
-        &:active, &:focus { /* Styles applied when the link is being clicked or focused */
-            outline: none; /* Removes the default focus outline for better accessibility */
-        }
-    }
-
-    h1, h2, h3, h4, h5, h6, p {
-        font-size: 20px; /* Default text size */
-        margin: 20px; /* Adds some spacing below each paragraph */
-    }
-
-    /* Additional styles for headers */
-    h1 {
-        font-size: 20px;
-    }
+}
     
-    h2 {
-        font-size: 20px;
-    }
-    
-    h3 {
-        font-size: 20px;
-    }
-    
-    h4 {
-        font-size: 20px;
-    }
-    
-    h5, h6 {
-        font-size: 20px;
+footer {
+    background-color: #5D7E6A;
+    padding-bottom: 35px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #dfe5e1;
+    text-align: center;
+    /* By default, footer will stick to the bottom due to Flexbox layout. */
+}
+
+a {
+    color: #5D7E6A; /* Sets the text color for links */
+    font-weight: bold; /* Makes the link text bold */
+
+    /* Additional styles */
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover { 
+        color: #2e4d37; /* Changes the text color to a darker shade on hover */
     }
 
-    /* Additional styles for paragraphs */
-    p {
-        line-height: 1.5; /* Adds some space between lines of text */
+    &:active, &:focus {
+        outline: none; 
     }
+}
+
+/* Headers and Paragraphs */
+h1, h2, h3, h4, h5, h6, p {
+    font-size: 20px;
+    margin: 20px; /* Adds some spacing below each paragraph */
+}
+
+p {
+    line-height: 1.5; /* Adds some space between lines of text */
 }
