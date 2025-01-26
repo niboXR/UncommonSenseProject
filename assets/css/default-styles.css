@@ -4,6 +4,14 @@ body {
     background-color: #dfe5e1; /* Set background color */
     font-family: 'Arial', sans-serif; /* Change the font family */
 
+    header {
+        background-color: #5D7E6A; /* Set background color of header */
+        height: 50px; /* Set height of header */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+     }
 
     a {
         color: #5D7E6A; /* Sets the text color for links */
