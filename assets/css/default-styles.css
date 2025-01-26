@@ -1,17 +1,34 @@
 body {
     margin: 0;
-    padding: 20px;
     background-color: #dfe5e1; /* Set background color */
     font-family: 'Arial', sans-serif; /* Change the font family */
 
     header {
         background-color: #5D7E6A; /* Set background color of header */
+        color: #dfe5e1; /* Set color of h1 text to match background */
         height: 50px; /* Set height of header */
         display: flex;
         justify-content: center;
         align-items: center;
 
      }
+
+    footer {
+        background-color: #5D7E6A; /* Set background color of footer to match body*/
+        height: 35px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;  /* Add this line */
+        align-items: center;  /* Add this line */
+    }
+            
+    footer p {
+        font-family: 'Arial', sans-serif; /* Change the font family */
+        font-size: 20px; /* Change the font size */
+        color: #dfe5e1; /* Change the text color */
+    }
 
     a {
         color: #5D7E6A; /* Sets the text color for links */
@@ -32,11 +49,12 @@ body {
 
     h1, h2, h3, h4, h5, h6, p {
         font-size: 20px; /* Default text size */
+        margin: 20px; /* Adds some spacing below each paragraph */
     }
 
     /* Additional styles for headers */
     h1 {
-        font-size: 20px;
+        font-size: 24px;
     }
     
     h2 {
@@ -58,6 +76,5 @@ body {
     /* Additional styles for paragraphs */
     p {
         line-height: 1.5; /* Adds some space between lines of text */
-        margin-bottom: 20px; /* Adds some spacing below each paragraph */
     }
 }
