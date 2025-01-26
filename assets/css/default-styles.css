@@ -1,6 +1,18 @@
 body {
     a {
-        color: #5D7E6A;
-	font-weight: bold;
+        color: #5D7E6A; /* Sets the text color for links */
+        font-weight: bold; /* Makes the link text bold */
+
+        /* Additional styles */
+        text-decoration: none; /* Removes the underline from links */
+        transition: all 0.3s ease; /* Adds a smooth transition effect to all CSS properties when hovering or focusing on the link */
+
+        &:hover { /* Styles applied when the user mouses over the link */
+            color: #2e4d37; /* Changes the text color to a darker shade on hover */
+        }
+
+        &:active, &:focus { /* Styles applied when the link is being clicked or focused */
+            outline: none; /* Removes the default focus outline for better accessibility */
+        }
     }
 }
