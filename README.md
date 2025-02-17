@@ -1,2 +1,4 @@
-# uncommonsense
-This is the home for my public policy content
+Uncommon Sense 
+This is the home for my uncommon sense project. This is a broad in scope public policy project.
+
+Credit to my partner for helping me come up with the name, for all the bathroom talks, and everything I know you will do to support this project.
