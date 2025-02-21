@@ -48,11 +48,34 @@ a {
 }
 
 /* Headers and Paragraphs */
-h1, h2, h3, h4, h5, h6, p {
+
+h1{ /*Page Titles & Section headers*/
+    font-size: 24px;
+    margin: 20px; /* Adds some spacing below each paragraph */
+    margin-bottom: 10px;
+}
+
+h6{ /*Subtitles*/
     font-size: 20px;
     margin: 20px; /* Adds some spacing below each paragraph */
+    margin-top: 0px;
+    margin-bottom: 40px;
+    font-weight: normal;
+}
+
+h2, h3 { 
+    font-size: 20px;
+    margin: 20px; /* Adds some spacing below each paragraph */
+    margin-bottom: 10px;
+
+}
+
+h4, h5, p {
+    font-size: 20px;
+    margin: 20px; /* Adds some spacing below each paragraph */
+    margin-top: 0px;
 }
 
 p {
-    line-height: 1.5; /* Adds some space between lines of text */
+    line-height: 2.0; /* Adds some space between lines of text */
 }
