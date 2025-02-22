@@ -28,7 +28,7 @@ header {
 }
 
 .header-link {
-    margin: 0 10px; /* Add 20px of space between each link, on both sides */
+    margin: 0 10px; /* Add 10px of space between each link, on both sides */
 }
 
 
@@ -97,4 +97,19 @@ h4, h5, p {
 
 p {
     line-height: 2.0; /* Adds some space between lines of text */
+}
+
+table {
+    border-collapse: collapse; /* Remove default spacing between cells */
+    margin: 0 20px; /* Add 20px of space on both sides */
+}
+
+th, td {
+    border: 1px solid #ddd; /* Add borders around each cell */
+    padding: 10px; /* Add space between text and cell edges */
+    text-align: left; /* Align text to the left in each cell */
+}
+
+th {
+    background-color: #f0f0f0; /* Lighten header cells */
 }
