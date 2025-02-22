@@ -22,12 +22,13 @@ header {
     justify-content: center;
     align-items: center;
 }
-.header-link {
+.header-links {
     display: flex;
     justify-content: space-between; /* Evenly distribute the links */
-    
-    margin-right: 50px;
-    
+}
+
+.header-link {
+    margin: 0 10px; /* Add 20px of space between each link, on both sides */
 }
 
 
