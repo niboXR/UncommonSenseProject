@@ -18,11 +18,25 @@ header {
     color: #dfe5e1;
     height: 100px;
     display: flex;
+    flex-direction: column; /* Stack elements vertically */
     justify-content: center;
     align-items: center;
-
 }
-    
+.header-links {
+    display: flex;
+    justify-content: space-between; /* Evenly distribute the links */
+}
+
+.header-link {
+    margin: 0 10px; /* Add 20px of space between each link, on both sides */
+}
+
+
+ header a {
+    color: #dfe5e1; /*color for header links */
+    text-decoration: none; /* Underline for header links */
+    font-size: 20px;
+}   
 footer {
     background-color: #5D7E6A;
     padding-bottom: 35px;
@@ -35,7 +49,7 @@ footer {
     /* By default, footer will stick to the bottom due to Flexbox layout. */
 }
 
-a {
+ a {
     color: #5D7E6A; /* Sets the text color for links */
     font-weight: bold; /* Makes the link text bold */
 
