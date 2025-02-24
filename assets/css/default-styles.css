@@ -31,6 +31,10 @@ header {
     margin: 0 10px; /* Add 10px of space between each link, on both sides */
 }
 
+.footnotes {
+    margin-top: -2em;
+}
+
 .footnotes hr {
     border: none;
 }
