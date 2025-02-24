@@ -31,6 +31,9 @@ header {
     margin: 0 10px; /* Add 10px of space between each link, on both sides */
 }
 
+.footnotes hr {
+    border: none;
+}
 
  header a {
     color: #dfe5e1; /*color for header links */
