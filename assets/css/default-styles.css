@@ -39,11 +39,23 @@ header {
     border: none;
 }
 
- header a {
+ h1 a {
+    color: #dfe5e1; /*color for header links */
+    text-decoration: none; /* Underline for header links */
+    font-size: 24px;
+}  
+
+header a {
     color: #dfe5e1; /*color for header links */
     text-decoration: none; /* Underline for header links */
     font-size: 20px;
-}   
+} 
+
+h1 a {
+    color: #dfe5e1; /*color for header links */
+    text-decoration: none; /* Underline for header links */
+    font-size: 24px;
+} 
 footer {
     background-color: #5D7E6A;
     padding-bottom: 35px;
@@ -109,12 +121,14 @@ p {
 table {
     border-collapse: collapse; /* Remove default spacing between cells */
     margin: 0 20px; /* Add 20px of space on both sides */
+    border-bottom: 5px solid #ddd;
 }
 
 th, td {
     border: 1px solid #ddd; /* Add borders around each cell */
     padding: 10px; /* Add space between text and cell edges */
     text-align: left; /* Align text to the left in each cell */
+    
 }
 
 th {
