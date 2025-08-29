@@ -16,6 +16,7 @@ website:
     type: warning
   title: "Uncommon Sense"
   navbar:
+    toggle-position: right
     search: true
     left:
       - text: "Rights"
