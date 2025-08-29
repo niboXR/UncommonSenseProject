@@ -1,0 +1,166 @@
+---
+format: html
+---
+
+{{< include md/welcome.md >}}
+
+---
+
+# Rights
+
+**Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. This is how we define our rights.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(yaml)
+library(knitr)
+library(kableExtra)
+
+# Define %||% fallback
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# Set path
+folder <- "md/Rights"
+files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
+
+# Extract YAML
+extract_yaml <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  if (length(lines) == 0 || lines[1] != "---") return(NULL)
+  
+  end_idx <- which(lines == "---")[2]
+  if (is.na(end_idx)) return(NULL)
+  
+  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
+  metadata <- yaml.load(yaml_content)
+  
+  tibble(
+    Right = metadata$title %||% "",
+    Definition = metadata$definition %||% "",
+    Publish = metadata$publish %||% FALSE
+  )
+}
+
+# Build table
+results <- map_dfr(files, extract_yaml) %>%
+  filter(Publish == TRUE) %>%
+  select(Right, Definition)
+
+# Reorder
+results <- results %>%
+  mutate(order = if_else(Right == "Example rights", 0, 1)) %>%
+  arrange(order, Right) %>%
+  select(-order)
+
+# Render Markdown in Definition
+results %>%
+  mutate(Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+  kable("html", escape = FALSE) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+---
+
+# Issues
+
+The issues we cover will be cases where individuals, organizations, or governments systemically infringe upon the *rights* of an individual or group of individuals. 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+
+# Define %||% fallback
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# Set path
+folder <- "md/Issues"
+files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
+
+# Extract YAML
+extract_yaml <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  if (length(lines) == 0 || lines[1] != "---") return(NULL)
+  
+  end_idx <- which(lines == "---")[2]
+  if (is.na(end_idx)) return(NULL)
+  
+  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
+  metadata <- yaml.load(yaml_content)
+  
+  tibble(
+    Issue = metadata$title %||% "",
+    Summary = metadata$summary %||% "",
+    Publish = metadata$publish %||% FALSE
+  )
+}
+
+# Build table
+results <- map_dfr(files, extract_yaml) %>%
+  filter(Publish == TRUE) %>%
+  select(Issue, Summary)
+
+# Render Markdown in Definition
+results %>%
+  mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+  kable("html", escape = FALSE) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+---
+
+# Solutions
+
+The solutions we cover will be public policy or laws that can be passed by congress to remedy an issue.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+
+# Define %||% fallback
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# Set path
+folder <- "md/Solutions"
+files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
+
+# Extract YAML
+extract_yaml <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  if (length(lines) == 0 || lines[1] != "---") return(NULL)
+  
+  end_idx <- which(lines == "---")[2]
+  if (is.na(end_idx)) return(NULL)
+  
+  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
+  metadata <- yaml.load(yaml_content)
+  
+  tibble(
+    Solution = metadata$title %||% "",
+    Summary = metadata$summary %||% "",
+    Publish = metadata$publish %||% FALSE
+  )
+}
+
+# Build table
+results <- map_dfr(files, extract_yaml) %>%
+  filter(Publish == TRUE) %>%
+  select(Solution, Summary)
+
+# Render Markdown in Definition
+results %>%
+  mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+  kable("html", escape = FALSE) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+```
+
+---

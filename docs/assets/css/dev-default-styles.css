@@ -1,0 +1,51 @@
+:root {
+  --primary-color: #5D7E6A;
+  --secondary-color: #dfe5e1;
+  --accent-color: #2e4d37;
+  --background-color: #dfe5e1;
+  /*--primary-font: 'Courier New', monospace;*/
+  /*--primary-font: Arial', sans-serif*/
+  --primary-font: 'Times New Roman', serif;
+  
+  
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    color: #dfe5e1;
+    font-family: var(--primary-font);
+}
+
+.navbar a {
+  &:hover { 
+    color: var(--accent-color); /* Changes the text color to a darker shade on hover */
+  }
+}
+
+body { 
+  background-color: var(--background-color); 
+  font-family: var(--primary-font);
+}
+
+ a {
+    color: var(--primary-color); /* Sets the text color for links */
+    font-weight: bold; /* Makes the link text bold */
+
+    /* Additional styles */
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover { 
+        color: var(--secondary-color); /* Changes the text color to a darker shade on hover */
+    }
+
+    &:active, &:focus {
+        outline: none; 
+    }
+}
+
+
+.footnotes {
+  background-color: var(--background-color); 
+  
+}

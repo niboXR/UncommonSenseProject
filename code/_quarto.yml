@@ -1,0 +1,30 @@
+project:
+  output-dir: "C:/Users/nickb/Projects/UncommonSense/Website/docs"
+  type: website
+  render: 
+    - index.qmd
+    - feed.qmd
+format:
+  html:
+    css: assets/css/dev-default-styles.css
+website:
+  announcement: 
+    icon: cone-striped
+    dismissable: true
+    content: "This website is under active development"
+    position: below-navbar
+    type: warning
+  title: "Uncommon Sense Project"
+  navbar:
+    search: true
+    left:
+      - text: "Rights"
+        href: index.qmd#rights
+      - text: "Issues"
+        href: index.qmd#issues
+      - text: "Solutions"
+        href: index.qmd#solutions
+    right: 
+      - text: "Feed"
+        href: feed.qmd
+        
