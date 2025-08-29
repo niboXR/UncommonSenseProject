@@ -14,7 +14,7 @@ website:
     content: "This website is under active development"
     position: below-navbar
     type: warning
-  title: "Uncommon Sense Project"
+  title: "Uncommon Sense"
   navbar:
     search: true
     left:
