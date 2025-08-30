@@ -4,10 +4,9 @@ type: solution
 issue: example issue
 author: Nick B
 author-bio: "[Nick B](bio.md)"
-summary: "**This is an example solution**. This space would typically be use to summarize the solution"
+summary: "This example solution addresses the example issue by doing this. This is the summary of supporting evidence. This is the summary of the action Congress shold take."
 publish: true
 ---
-**This is an example solution**. This space would typically be use to summarize the solution.
 
 # The Solution.
 This section will provide information about what the policy does, where the policy originated, its rationale and any examples of the policy in action

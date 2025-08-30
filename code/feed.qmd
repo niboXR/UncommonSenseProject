@@ -8,7 +8,7 @@ toc-title: Entry
 ```{r}
 ```
 
-::: callout-note
+::: {.callout-note icon="false"}
 This project is about addressing longstanding issues in American public policy and law, rather than reacting to current affairs. That said, some things should be said out loud. Those things will be said here.
 :::
 
