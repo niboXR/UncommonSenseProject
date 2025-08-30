@@ -44,6 +44,9 @@ body {
     }
 }
 
+div#quarto-appendix.default {
+  background-color: var(--background-color); /* Replace with your desired color */
+}
 
 .footnotes {
   background-color: var(--background-color); 

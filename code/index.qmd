@@ -4,11 +4,13 @@ format: html
 
 {{< include md/welcome.md >}}
 
----
+------------------------------------------------------------------------
 
 # Rights
 
-**Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. This is how we define our rights.
+**Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. While the rights we defend will often have legal footing within the United States and internationally, the guiding principle will always be life, liberty, and happiness.
+
+This is how we define our rights.
 
 ```{r}
 #| echo: false
@@ -63,11 +65,11 @@ results %>%
 
 ```
 
----
+------------------------------------------------------------------------
 
 # Issues
 
-The issues we cover will be cases where individuals, organizations, or governments systemically infringe upon the *rights* of an individual or group of individuals. 
+The issues we cover will be cases where individuals, organizations, or governments systemically infringe upon the *rights* of an individual or group of individuals.
 
 ```{r}
 #| echo: false
@@ -113,7 +115,7 @@ results %>%
 
 ```
 
----
+------------------------------------------------------------------------
 
 # Solutions
 
@@ -163,4 +165,4 @@ results %>%
 
 ```
 
----
+------------------------------------------------------------------------
