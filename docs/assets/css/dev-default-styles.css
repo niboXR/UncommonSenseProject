@@ -79,3 +79,21 @@ nav#TOC a.nav-link.active {
   color: #D72638 !important;
 }
 
+.footnotes h2::after {
+  content: "Sources";
+}
+
+.footnotes h2 {
+  color: transparent;  /* hides the original text */
+  position: relative;
+}
+
+.footnotes h2::after {
+  content: "Sources";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: black;        /* or your desired text color */
+  white-space: nowrap; /* prevent wrapping */
+  pointer-events: none; /* so it doesn't interfere with clicks */
+}

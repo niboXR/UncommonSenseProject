@@ -1,12 +1,8 @@
 ---
 title: Commercial surveillance
 right: data rights
-author: Nick B
-author-bio: "[Nick B](bio.md)"
-publish: true
-pub-date:
-revised-date:
 summary: "*Data rights* protect people from the misuse of their personal information. Technology companies have become increasingly hostile in their collection and monetization of our data with little respect for privacy. This trend, combined with grossly inadequate protections, is increasingly worrisome as advances in technology rapidly expands the information these companies are capable of collecting. Congress MUST enact digital privacy protections that shifts decision-making back to the people."
+publish: true
 ---
 
 *Data rights* protect people from the misuse of their personal information. Technology companies have become increasingly hostile in their collection and monetization of our data with little respect for privacy. This trend, combined with grossly inadequate protections, is increasingly worrisome as advances in technology rapidly expands the information these companies are capable of collecting. Congress MUST enact digital privacy protections that shifts decision-making back to the people.

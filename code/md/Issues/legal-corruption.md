@@ -1,13 +1,8 @@
 ---
 title: Legal corruption
-type: issue
 right: voter rights
-author: Nick B
-author-bio: "[Nick B](bio.md)"
-publish: 
-pub-date: 
-revised-date: 
 summary: work in progress
+publish: false
 ---
 *One paragraph summary of the right being impacted by this issue and a short summary of the issue, solutions, and action steps*
 

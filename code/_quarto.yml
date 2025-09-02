@@ -4,9 +4,10 @@ project:
   render: 
     - index.qmd
     - feed.qmd
+    - md/Rights
 format:
   html:
-    css: assets/css/dev-default-styles.css
+    css: /assets/css/dev-default-styles.css
 website:
   announcement: 
     icon: cone-striped

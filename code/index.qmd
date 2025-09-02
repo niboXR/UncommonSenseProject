@@ -10,7 +10,7 @@ format: html
 
 **Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. While the rights we defend will often have legal footing within the United States and internationally, the guiding principle will always be life, liberty, and happiness.
 
-This is how we define our rights.
+This is how we define our rights. You can find additional rationale and sources by clicking on each right.
 
 ```{r}
 #| echo: false
@@ -39,7 +39,11 @@ extract_yaml <- function(path) {
   yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
   metadata <- yaml.load(yaml_content)
   
+  html_path <- str_replace(path, "\\.md$", ".html") #get html path
+  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
+    
   tibble(
+    Link = markdown_link,
     Right = metadata$title %||% "",
     Definition = metadata$definition %||% "",
     Publish = metadata$publish %||% FALSE
@@ -49,7 +53,7 @@ extract_yaml <- function(path) {
 # Build table
 results <- map_dfr(files, extract_yaml) %>%
   filter(Publish == TRUE) %>%
-  select(Right, Definition)
+  select(Link, Right, Definition)
 
 # Reorder
 results <- results %>%
@@ -59,9 +63,16 @@ results <- results %>%
 
 # Render Markdown in Definition
 results %>%
-  mutate(Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+  mutate(
+    Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
+    Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+    select(-Link) %>%
   kable("html", escape = FALSE) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  kable_styling(full_width = TRUE, 
+                bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                )
+
+
 
 ```
 
