@@ -10,7 +10,7 @@ format: html
 
 **Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. While the rights we defend will often have legal footing within the United States and internationally, the guiding principle will always be life, liberty, and happiness.
 
-This is how we define our rights. You can find additional rationale and sources by clicking on each right.
+This is how we define our rights.
 
 ```{r}
 #| echo: false
@@ -64,11 +64,12 @@ results <- results %>%
 # Render Markdown in Definition
 results %>%
   mutate(
-    Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
+    # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
     Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
     select(-Link) %>%
-  kable("html", escape = FALSE) %>%
-  kable_styling(full_width = FALSE, 
+  kable("html",
+        escape = FALSE) %>%
+  kable_styling(full_width = TRUE, 
                 bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                 )
 

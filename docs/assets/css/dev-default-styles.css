@@ -97,3 +97,4 @@ nav#TOC a.nav-link.active {
   white-space: nowrap; /* prevent wrapping */
   pointer-events: none; /* so it doesn't interfere with clicks */
 }
+
