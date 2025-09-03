@@ -68,7 +68,7 @@ results %>%
     Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
     select(-Link) %>%
   kable("html", escape = FALSE) %>%
-  kable_styling(full_width = TRUE, 
+  kable_styling(full_width = FALSE, 
                 bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                 )
 
