@@ -190,6 +190,8 @@ nav#TOC a.nav-link.active {
   transform: rotateY(180deg);
   min-height: 300px;
   height: auto;
+  margin-bottom: 0;
+  
 }
 
 /* Optional: Better link appearance */
