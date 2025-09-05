@@ -97,30 +97,21 @@ nav#TOC a.nav-link.active {
 *Trying to make cards work*
 ***************************/
 .card-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
-  justify-content: space-between;
   margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  .right-card {
-    flex: 1 1 100%; /* Stack on smaller screens */
-  }
-}
-
 .right-card {
-  flex: 1 1 calc(50% - 1.5rem); /* Two cards per row with spacing */
-  min-width: 300px;
   border: 1px solid var(--accent-color);
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 1rem;
   background-color: var(--white);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
 }
+
 .right-card:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
