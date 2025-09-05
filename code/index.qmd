@@ -10,9 +10,8 @@ format: html
 
 **Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. While the rights we defend will often have legal footing within the United States and internationally, the guiding principle will always be life, liberty, and happiness.
 
-This is how we define our rights.
-
 ```{r}
+#| label: rights-data
 #| echo: false
 #| message: false
 #| warning: false
@@ -50,7 +49,7 @@ extract_yaml <- function(path) {
   )
 }
 
-# Build table
+# Build the rights table
 results <- map_dfr(files, extract_yaml) %>%
   filter(Publish == TRUE) %>%
   select(Link, Right, Definition)
@@ -61,22 +60,30 @@ results <- results %>%
   arrange(order, Right) %>%
   select(-order)
 
-# # Render Table
-# results %>%
-#   mutate(
-#     # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
-#     Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
-#     select(-Link) %>%
-#   kable("html",
-#         escape = FALSE) %>%
-#   kable_styling(full_width = TRUE, 
-#                 bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-#                 )
 
 ```
 
+```{r}
+#| label: rights-table
+#| eval: false
+#| include: false
+
+# Render Table
+results %>%
+  mutate(
+    # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
+    Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+    select(-Link) %>%
+  kable("html",
+        escape = FALSE) %>%
+  kable_styling(full_width = TRUE,
+                bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                )
+
+```
 
 ```{r echo=FALSE, results='asis'}
+#| label: rights-cards
 library(knitr)
 
 # Loop over results and output raw HTML using asis_output
@@ -87,7 +94,7 @@ for (i in seq_len(nrow(results))) {
 <div class="right-card">
   <h3>%s</h3>
   <p>%s</p>
-  <a href="%s">Read more ↗</a>
+  <a href="%s">Rationale and sources ↗</a>
 </div>
 ', results$Right[i], results$Definition[i], results$Link[i])))
 }
@@ -100,6 +107,7 @@ cat('</div>')
 The issues we cover will be cases where individuals, organizations, or governments systemically infringe upon the *rights* of an individual or group of individuals.
 
 ```{r}
+#| label: issues-data
 #| echo: false
 #| message: false
 #| warning: false
@@ -123,7 +131,12 @@ extract_yaml <- function(path) {
   yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
   metadata <- yaml.load(yaml_content)
   
+  html_path <- str_replace(path, "\\.md$", ".html") #get html path
+  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
+
+  
   tibble(
+    Link = html_path,
     Issue = metadata$title %||% "",
     Summary = metadata$summary %||% "",
     Publish = metadata$publish %||% FALSE
@@ -133,16 +146,46 @@ extract_yaml <- function(path) {
 # Build table
 results <- map_dfr(files, extract_yaml) %>%
   filter(Publish == TRUE) %>%
-  select(Issue, Summary)
+  select(Link, Issue, Summary)
 
-# Render Markdown in Definition
+```
+
+```{r}
+#| label: issues-table
+#| eval: false
+#| include: false
+
+# Render Table
 results %>%
   mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
   kable("html", escape = FALSE) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-
 ```
 
+```{r echo=FALSE, results='asis'}
+#| label: issues-cards
+library(knitr)
+
+# Loop over results and output raw HTML using asis_output
+cat('<div class="flip-card-grid">')
+
+for (i in seq_len(nrow(results))) {
+  cat(asis_output(sprintf('
+<div class="flip-card">
+<div class="flip-card-inner">
+<div class="flip-card-front">
+  <h3>%s</h3>
+</div>
+<div class="flip-card-back">
+  <p>%s</p>
+  <a href="%s">Read the Issue ↗</a>
+</div>
+</div>
+</div>
+', results$Issue[i], results$Summary[i], results$Link[i])))
+}
+cat('</div>')
+```
 ------------------------------------------------------------------------
 
 # Solutions
@@ -150,6 +193,7 @@ results %>%
 The solutions we cover will be public policy or laws that can be passed by congress to remedy an issue.
 
 ```{r}
+#| label: solutions-data
 #| echo: false
 #| message: false
 #| warning: false
@@ -172,8 +216,12 @@ extract_yaml <- function(path) {
   
   yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
   metadata <- yaml.load(yaml_content)
+
+  html_path <- str_replace(path, "\\.md$", ".html") #get html path
+  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
   
   tibble(
+    Link = html_path,
     Solution = metadata$title %||% "",
     Summary = metadata$summary %||% "",
     Publish = metadata$publish %||% FALSE
@@ -183,14 +231,45 @@ extract_yaml <- function(path) {
 # Build table
 results <- map_dfr(files, extract_yaml) %>%
   filter(Publish == TRUE) %>%
-  select(Solution, Summary)
+  select(Link, Solution, Summary)
 
-# Render Markdown in Definition
+
+```
+
+```{r}
+#| label: solutions-table
+#| eval: false
+#| include: false
+
+# Render Table
 results %>%
   mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
   kable("html", escape = FALSE) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-
 ```
 
 ------------------------------------------------------------------------
+```{r echo=FALSE, results='asis'}
+#| label: solutions-cards
+library(knitr)
+
+# Loop over results and output raw HTML using asis_output
+cat('<div class="flip-card-grid">')
+
+for (i in seq_len(nrow(results))) {
+  cat(asis_output(sprintf('
+<div class="flip-card">
+<div class="flip-card-inner">
+<div class="flip-card-front">
+  <h3>%s</h3>
+</div>
+<div class="flip-card-back">
+  <p>%s</p>
+  <a href="%s">Read about this solution ↗</a>
+</div>
+</div>
+</div>
+', results$Solution[i], results$Summary[i], results$Link[i])))
+}
+cat('</div>')
+```

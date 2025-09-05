@@ -5,6 +5,8 @@ project:
     - index.qmd
     - feed.qmd
     - md/Rights
+    - md/Issues
+    - md/Solutions
 format:
   html:
     css: /assets/css/dev-default-styles.css
