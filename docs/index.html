@@ -336,7 +336,17 @@ document.addEventListener("DOMContentLoaded", function() {
     card.addEventListener('mouseleave', function() {
       this.style.marginBottom = '0';
     });
-  });
+
+ // For touch devices
+        card.addEventListener('touchstart', function(e) {
+            const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+            this.style.marginBottom = (backHeight - 300) + 'px';
+        });
+
+        card.addEventListener('touchend', function() {
+            this.style.marginBottom = '0';
+        });
+    });
 });
 </script>
 
