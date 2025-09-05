@@ -100,6 +100,7 @@ for (i in seq_len(nrow(results))) {
 }
 cat('</div>')
 ```
+
 ------------------------------------------------------------------------
 
 # Issues
@@ -187,6 +188,7 @@ for (i in seq_len(nrow(results))) {
 }
 cat('</div>')
 ```
+
 ------------------------------------------------------------------------
 
 # Solutions
@@ -249,7 +251,6 @@ results %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-
 ```{r echo=FALSE, results='asis'}
 #| label: solutions-cards
 library(knitr)
@@ -275,4 +276,24 @@ for (i in seq_len(nrow(results))) {
 }
 cat('</div>')
 ```
+
 ------------------------------------------------------------------------
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const flipCards = document.querySelectorAll('.flip-card');
+
+  flipCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+      this.style.marginBottom = (backHeight - 300) + 'px';
+    });
+
+    card.addEventListener('mouseleave', function() {
+      this.style.marginBottom = '0';
+    });
+  });
+});
+</script>
+```

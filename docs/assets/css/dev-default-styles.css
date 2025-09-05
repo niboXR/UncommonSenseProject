@@ -117,7 +117,7 @@ nav#TOC a.nav-link.active {
 }
 
 .right-card:hover {
-  transform: scale(1.02);
+  transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .right-card h3 {
