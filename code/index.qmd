@@ -249,7 +249,7 @@ results %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-------------------------------------------------------------------------
+
 ```{r echo=FALSE, results='asis'}
 #| label: solutions-cards
 library(knitr)
@@ -275,3 +275,4 @@ for (i in seq_len(nrow(results))) {
 }
 cat('</div>')
 ```
+------------------------------------------------------------------------
