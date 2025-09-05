@@ -300,8 +300,13 @@ document.addEventListener("DOMContentLoaded", function() {
             this.style.marginBottom = (backHeight - 300) + 'px';
         });
 
-        card.addEventListener('touchend', function() {
-            this.style.marginBottom = '0';
+        // Clear margin when another card is touched
+        document.addEventListener('touchstart', function() {
+            if (!event.target.closest('.flip-card')) {
+                flipCards.forEach(card => {
+                    card.style.marginBottom = '0';
+                });
+            }
         });
     });
 });
