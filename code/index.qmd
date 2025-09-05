@@ -175,6 +175,7 @@ for (i in seq_len(nrow(results))) {
 <div class="flip-card-inner">
 <div class="flip-card-front">
   <h3>%s</h3>
+  <span class="flip-icon" title="Flip to read more">↻</span>
 </div>
 <div class="flip-card-back">
   <p>%s</p>
@@ -262,6 +263,7 @@ for (i in seq_len(nrow(results))) {
 <div class="flip-card-inner">
 <div class="flip-card-front">
   <h3>%s</h3>
+  <span class="flip-icon" title="Flip to read more">↻</span>
 </div>
 <div class="flip-card-back">
   <p>%s</p>

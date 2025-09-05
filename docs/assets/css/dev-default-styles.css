@@ -204,3 +204,13 @@ nav#TOC a.nav-link.active {
   text-decoration: underline;
 }
 
+.flip-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  pointer-events: none; /* so it doesn't interfere with hover */
+}
