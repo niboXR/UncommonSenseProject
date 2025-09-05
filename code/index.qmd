@@ -43,7 +43,7 @@ extract_yaml <- function(path) {
   markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
     
   tibble(
-    Link = markdown_link,
+    Link = html_path,
     Right = metadata$title %||% "",
     Definition = metadata$definition %||% "",
     Publish = metadata$publish %||% FALSE
@@ -61,22 +61,37 @@ results <- results %>%
   arrange(order, Right) %>%
   select(-order)
 
-# Render Markdown in Definition
-results %>%
-  mutate(
-    # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
-    Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
-    select(-Link) %>%
-  kable("html",
-        escape = FALSE) %>%
-  kable_styling(full_width = TRUE, 
-                bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                )
-
-
+# # Render Table
+# results %>%
+#   mutate(
+#     # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
+#     Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
+#     select(-Link) %>%
+#   kable("html",
+#         escape = FALSE) %>%
+#   kable_styling(full_width = TRUE, 
+#                 bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+#                 )
 
 ```
 
+
+```{r echo=FALSE, results='asis'}
+library(knitr)
+
+# Loop over results and output raw HTML using asis_output
+cat('<div class="card-grid">')
+
+for (i in seq_len(nrow(results))) {
+  cat(asis_output(sprintf('
+<div class="right-card">
+  <h3>%s</h3>
+  <p>%s</p>
+  <a href="%s">Read more ↗</a>
+</div>
+', results$Right[i], results$Definition[i], results$Link[i])))
+}
+```
 ------------------------------------------------------------------------
 
 # Issues
