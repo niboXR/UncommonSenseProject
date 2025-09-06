@@ -11,9 +11,10 @@ publish: true
 
 # The Solutions.
 
--   [Medicare for All](medicare-for-all.md)
--   Address medical desserts
--   Enshrine the protections of *Roe V Wade* (1973), Overturn *Dobbs v. Jackson Women’s Health Organization* (2022).
--   Restore and protect gender-affirming care
+-   Medicare for All
 
-# My Sources.
+-   Address medical desserts
+
+-   Enshrine the protections of *Roe V Wade* (1973), Overturn *Dobbs v. Jackson Women’s Health Organization* (2022).
+
+-   Restore and protect gender-affirming care

@@ -29,8 +29,6 @@ The American people do not understand or want this outcome. A nationally represe
 
 [^3]: [Pew Research Center, How Americans View Data Privacy](https://www.pewresearch.org/wp-content/uploads/sites/20/2023/10/PI_2023.10.18_Data-Privacy_FINAL.pdf)
 
-# The Solution(s).
+# The Solutions.
 
--   [Digital Bill of Rights](digital-bill-of-rights.md)
-
-# Sources
+-   A digital bill of rights.

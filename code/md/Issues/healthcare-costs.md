@@ -9,9 +9,10 @@ publish: true
 
 # The Solutions.
 
--   [Medicare for All](medicare-for-all.md)
--   Trust bust monopoly medicine
--   Allow Medicare to negotiate drug prices
--   End patent abuses and pursue generics
+-   Medicare for All
 
-# My Sources.
+-   Trust bust monopoly medicine
+
+-   Allow Medicare to negotiate drug prices
+
+-   End patent abuses and pursue generics
