@@ -304,21 +304,18 @@ if (!isTouchDevice) {
 if (isTouchDevice) {
 
   // If card is clicked, add appropriate margin, else no margin
-  flipCards.forEach(card => {
-    card.addEventListener('click', function (e) {
-      e.stopPropagation();
-      const backHeight = card.querySelector('.flip-card-back').offsetHeight;
-      card.style.marginBottom = (backHeight - 300) + 'px';
-    });
-  });
-
-  document.addEventListener('click', function () {
+  document.addEventListener('click', function (e) {
     flipCards.forEach(card => {
-      card.style.marginBottom = '0';
+      if (card.contains(e.target)) {
+        const backHeight = card.querySelector('.flip-card-back').offsetHeight;
+        card.style.marginBottom = (backHeight - 300) + 'px';
+      } else {
+        card.style.marginBottom = '0';
+      }
     });
   });
+  
 }
-
 
 
 });
