@@ -304,9 +304,10 @@ if (!isTouchDevice) {
 if (isTouchDevice) {
 
   // If card is clicked, add appropriate margin, else no margin
+    //not sure about the functionality of e.target.closest or statement
   document.addEventListener('click', function (e) {
     flipCards.forEach(card => {
-      if (card.contains(e.target)) {
+      if (card.contains(e.target)) || e.target.closest('.h3.anchored') !== null) {
         const backHeight = card.querySelector('.flip-card-back').offsetHeight;
         card.style.marginBottom = (backHeight - 300) + 'px';
       } else {
