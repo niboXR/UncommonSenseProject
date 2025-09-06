@@ -325,51 +325,37 @@ This example solution addresses the example issue by doing this. This is the sum
 <hr>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  
   const flipCards = document.querySelectorAll('.flip-card');
-
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+if (!isTouchDevice) {
   flipCards.forEach(card => {
-    const back = card.querySelector('.flip-card-back');
+    
+    card.addEventListener('mouseenter', function() {
+      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+      this.style.marginBottom = (backHeight - 300) + 'px';
+    });
 
-    if (isTouchDevice) {
-      let isFlipped = false;
+    card.addEventListener('mouseleave', function() {
+      this.style.marginBottom = '0';
+    });
 
-      card.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent bubbling up, optional
-        isFlipped = !isFlipped;
-
-        if (isFlipped) {
-          const backHeight = back.offsetHeight;
-          this.style.marginBottom = (backHeight - 300) + 'px';
-          this.classList.add('flipped');
-        } else {
-          this.style.marginBottom = '0';
-          this.classList.remove('flipped');
-        }
-      });
-
-      // Optional: Close if tapped outside
-      document.addEventListener('click', function(e) {
-        if (!card.contains(e.target)) {
-          card.style.marginBottom = '0';
-          card.classList.remove('flipped');
-          isFlipped = false;
-        }
-      });
-
-    } else {
-      // Desktop hover behavior
-      card.addEventListener('mouseenter', function() {
-        const backHeight = back.offsetHeight;
-        this.style.marginBottom = (backHeight - 300) + 'px';
-      });
-
-      card.addEventListener('mouseleave', function() {
-        this.style.marginBottom = '0';
-      });
-    }
   });
+}
+
+if (isTouchDevice) {
+  flipCards.forEach(card => {
+    
+    card.addEventListener('click', function() {
+      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+      this.style.marginBottom = (backHeight - 300) + 'px';
+    });
+
+  });
+  
+}
+
 });
 </script>
 

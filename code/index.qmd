@@ -282,9 +282,13 @@ cat('</div>')
 ```{=html}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  
   const flipCards = document.querySelectorAll('.flip-card');
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+if (!isTouchDevice) {
   flipCards.forEach(card => {
+    
     card.addEventListener('mouseenter', function() {
       const backHeight = this.querySelector('.flip-card-back').offsetHeight;
       this.style.marginBottom = (backHeight - 300) + 'px';
@@ -295,6 +299,20 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
   });
+}
+
+if (isTouchDevice) {
+  flipCards.forEach(card => {
+    
+    card.addEventListener('click', function() {
+      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+      this.style.marginBottom = (backHeight - 300) + 'px';
+    });
+
+  });
+  
+}
+
 });
 </script>
 ```
