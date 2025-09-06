@@ -311,6 +311,15 @@ if (isTouchDevice) {
 
   });
   
+    // Tap outside: reset margin
+    document.addEventListener('click', function (e) {
+      flipCards.forEach(card => {
+        if (!card.contains(e.target)) {
+          card.style.marginBottom = '0';
+        }
+      });  
+    });  
+  
 }
 
 });
