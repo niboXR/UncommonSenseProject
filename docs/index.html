@@ -325,33 +325,44 @@ This example solution addresses the example issue by doing this. This is the sum
 <hr>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  const flipCards = document.querySelectorAll('.flip-card');
+    const flipCards = document.querySelectorAll('.flip-card');
 
-  flipCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
-      this.style.marginBottom = (backHeight - 300) + 'px';
-    });
+    // Function to reset all margins
+    function resetAllMargins() {
+        flipCards.forEach(card => {
+            card.style.marginBottom = '0';
+        });
+    }
 
-    card.addEventListener('mouseleave', function() {
-      this.style.marginBottom = '0';
-    });
+    flipCards.forEach(card => {
+        const back = card.querySelector('.flip-card-back');
 
- // For touch devices
-        card.addEventListener('touchstart', function(e) {
-            const backHeight = this.querySelector('.flip-card-back').offsetHeight;
+        // Mouse events (desktop)
+        card.addEventListener('mouseenter', function() {
+            const backHeight = back.offsetHeight;
             this.style.marginBottom = (backHeight - 300) + 'px';
         });
 
-        // Clear margin when another card is touched
-        document.addEventListener('touchstart', function() {
-            if (!event.target.closest('.flip-card')) {
-                flipCards.forEach(card => {
-                    card.style.marginBottom = '0';
-                });
-            }
+        card.addEventListener('mouseleave', function() {
+            this.style.marginBottom = '0';
         });
+
+        // Touch events (mobile)
+        card.addEventListener('touchstart', function(e) {
+            e.stopPropagation(); // Prevent event bubbling to document
+            resetAllMargins(); // Reset other cards
+
+            const backHeight = back.offsetHeight;
+            this.style.marginBottom = (backHeight - 300) + 'px';
+        }, { passive: true });
     });
+
+    // If touch happens outside of a card, reset margins
+    document.addEventListener('touchstart', function(e) {
+        if (!e.target.closest('.flip-card')) {
+            resetAllMargins();
+        }
+    }, { passive: true });
 });
 </script>
 
