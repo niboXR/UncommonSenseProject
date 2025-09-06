@@ -345,11 +345,8 @@ if (!isTouchDevice) {
 }
 
 if (isTouchDevice) {
-  flipCards.forEach(card => {
-    card.classList.add('touch-enabled'); // Optional class for styling if needed
-  });
 
-  // Delegate click handling
+  // If card is clicked, add appropriate margin, else no margin
   document.addEventListener('click', function (e) {
     flipCards.forEach(card => {
       if (card.contains(e.target)) {
@@ -358,6 +355,13 @@ if (isTouchDevice) {
       } else {
         card.style.marginBottom = '0';
       }
+    });
+  });
+  
+  // Prevent default behavior of click on link
+  document.querySelectorAll('h3.anchor').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
     });
   });
 }
