@@ -11,6 +11,9 @@
   
 }
 
+/*******
+*NAVBAR*
+*******/
 .navbar {
     background-color: var(--primary-color);
     color: #dfe5e1;
@@ -22,6 +25,23 @@
     color: var(--accent-color); /* Changes the text color to a darker shade on hover */
   }
 }
+
+
+/****
+*TOC*
+****/
+nav#TOC a.nav-link:hover {
+  color: var(--primary-color) !important; /* Your desired hover color */
+}
+
+/* Change link color when active (clicked or matching current scroll position) */
+nav#TOC a.nav-link.active {
+  color: var(--primary-color) !important; /* Your active color */
+}
+
+/*****
+*MAIN*
+*****/
 
 body { 
   background-color: var(--background-color); 
@@ -38,6 +58,7 @@ body {
 
     &:hover { 
         color: var(--accent-color); /* Changes the text color to a darker shade on hover */
+        text-decoration: underline;
     }
 
     &:active, &:focus {
@@ -45,6 +66,9 @@ body {
     }
 }
 
+/**********
+*FOOTNOTES*
+**********/
 div#quarto-appendix.default {
   background-color: var(--background-color); /* Replace with your desired color */
 }
@@ -53,28 +77,6 @@ div#quarto-appendix.default {
   background-color: var(--background-color); 
   
 }
-
-/* Change link color on hover */
-nav#TOC a.nav-link:hover {
-  color: var(--primary-color) !important; /* Your desired hover color */
-}
-
-/* Change link color when active (clicked or matching current scroll position) */
-nav#TOC a.nav-link.active {
-  color: var(--primary-color) !important; /* Your active color */
-}
-
-.callout.callout-note {
-  border-color: var(--accent-color) !important;
-  background-color: var(--white); /* light background */
-}
-
-/* Change the header (title) background and color */
-.callout.callout-note .callout-header {
-  background-color: var(--accent-color) !important; /* lighter purple */
-  color: var(--secondary-color); /* dark text */
-}
-
 
 .footnotes h2::after {
   content: "Sources";
@@ -91,6 +93,20 @@ nav#TOC a.nav-link.active {
   top: 0;
   left: 0;
   color: black;        /* or your desired text color */
+}
+
+/*********
+*CALLOUTS*
+*********/
+.callout.callout-note {
+  border-color: var(--accent-color) !important;
+  background-color: var(--white); /* light background */
+}
+
+/* Change the header (title) background and color */
+.callout.callout-note .callout-header {
+  background-color: var(--accent-color) !important; /* lighter purple */
+  color: var(--secondary-color); /* dark text */
 }
 
 /**************
@@ -112,23 +128,12 @@ nav#TOC a.nav-link.active {
   transition: transform 0.2s ease;
 }
 
-.right-card a:hover {
-  text-decoration: underline;
-}
 
 .right-card:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.right-card h3 {
-  margin-top: 0;
-  color: #333;
-}
-.right-card p {
-  margin: 0.5rem 0;
-  margin-bottom: 0;
-  color: #555;
-}
+
 
 /**********
 *Flip card*
@@ -141,12 +146,11 @@ nav#TOC a.nav-link.active {
   margin-top: 1rem;
 }
 
-/* Flip Card Wrapper */
 .flip-card {
   perspective: 1000px;
 }
 
-/* Optional: Raise z-index when hovered */
+/*Raise z-index when hovered */
 .flip-card:hover {
   z-index: 10;
 }
@@ -194,25 +198,18 @@ nav#TOC a.nav-link.active {
   
 }
 
-/* Optional: Better link appearance */
-.flip-card-back a {
-  margin-top: 1rem;
-  color: var(--accent-color);
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.flip-card-back a:hover {
-  text-decoration: underline;
-}
 
 .flip-icon {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--accent-color);
   cursor: pointer;
   transition: transform 0.3s ease;
   pointer-events: none; /* so it doesn't interfere with hover */
+}
+
+.flip-card-front h3.anchored { 
+  pointer-events: none; /*Another attempt to solve mobile issue*/
 }
