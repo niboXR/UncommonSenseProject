@@ -347,24 +347,21 @@ if (!isTouchDevice) {
 if (isTouchDevice) {
 
   // If card is clicked, add appropriate margin, else no margin
-  document.addEventListener('click', function (e) {
-    flipCards.forEach(card => {
-      if (card.contains(e.target)) {
-        const backHeight = card.querySelector('.flip-card-back').offsetHeight;
-        card.style.marginBottom = (backHeight - 300) + 'px';
-      } else {
-        card.style.marginBottom = '0';
-      }
+  flipCards.forEach(card => {
+    card.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const backHeight = card.querySelector('.flip-card-back').offsetHeight;
+      card.style.marginBottom = (backHeight - 300) + 'px';
     });
   });
-  
-  // Prevent default behavior of click on link
-  document.querySelectorAll('h3.anchor').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
+
+  document.addEventListener('click', function () {
+    flipCards.forEach(card => {
+      card.style.marginBottom = '0';
     });
   });
 }
+
 
 
 });
