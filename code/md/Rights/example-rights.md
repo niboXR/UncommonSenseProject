@@ -7,8 +7,6 @@ pub-date: 2025-01-20
 
 **Example rights** guarantee *guarantee-group* **example guarantee**
 
-# Table of related issues
+# Rationale
 
-| Issue | Summary |
-|-------------------|-----------------------------------------------------|
-| [Example issue](example-issue.md) | **This an example issue.** This space would typically be used to provide a summary of the issue. |
+This is where we will provide our rationale and sources for the provided definition.
