@@ -303,24 +303,22 @@ if (!isTouchDevice) {
 
 if (isTouchDevice) {
   flipCards.forEach(card => {
-    
-    card.addEventListener('click', function() {
-      const backHeight = this.querySelector('.flip-card-back').offsetHeight;
-      this.style.marginBottom = (backHeight - 300) + 'px';
-    });
-
+    card.classList.add('touch-enabled'); // Optional class for styling if needed
   });
-  
-    // Tap outside: reset margin
-    document.addEventListener('click', function (e) {
-      flipCards.forEach(card => {
-        if (!card.contains(e.target)) {
-          card.style.marginBottom = '0';
-        }
-      });  
-    });  
-  
+
+  // Delegate click handling
+  document.addEventListener('click', function (e) {
+    flipCards.forEach(card => {
+      if (card.contains(e.target)) {
+        const backHeight = card.querySelector('.flip-card-back').offsetHeight;
+        card.style.marginBottom = (backHeight - 300) + 'px';
+      } else {
+        card.style.marginBottom = '0';
+      }
+    });
+  });
 }
+
 
 });
 </script>
