@@ -347,7 +347,7 @@ if (!isTouchDevice) {
 if (isTouchDevice) {
 
   // If card is clicked, add appropriate margin, else no margin
-  document.addEventListener('touchstart', function (e) {
+  document.addEventListener('pointerdown', function (e) {
     flipCards.forEach(card => {
       if (card.contains(e.target)) {
         const backHeight = card.querySelector('.flip-card-back').offsetHeight;
