@@ -333,12 +333,20 @@ if (!isTouchDevice) {
   flipCards.forEach(card => {
     
     card.addEventListener('mouseenter', function() {
+      
+      card.classList.replace('flip-card', 'flipped-card'); //set class
+      
       const backHeight = this.querySelector('.flip-card-back').offsetHeight;
       this.style.marginBottom = (backHeight - 300) + 'px';
+      
     });
 
     card.addEventListener('mouseleave', function() {
+      
+      card.classList.replace('flipped-card', 'flip-card'); //set class
+      
       this.style.marginBottom = '0';
+
     });
 
   });
@@ -349,10 +357,14 @@ if (isTouchDevice) {
   // If card is clicked, add appropriate margin, else no margin
   document.addEventListener('pointerdown', function (e) {
     flipCards.forEach(card => {
+      
       if (card.contains(e.target)) {
+        
         const backHeight = card.querySelector('.flip-card-back').offsetHeight;
         card.style.marginBottom = (backHeight - 300) + 'px';
+    
       } else {
+        
         card.style.marginBottom = '0';
       }
     });
