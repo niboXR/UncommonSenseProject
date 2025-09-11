@@ -318,12 +318,18 @@ if (isTouchDevice) {
       
       if (card.contains(e.target)) {
         
+        card.classList.replace('flip-card', 'flipped-card');
+        
         const backHeight = card.querySelector('.flip-card-back').offsetHeight;
         card.style.marginBottom = (backHeight - 300) + 'px';
     
       } else {
         
         card.style.marginBottom = '0';
+        
+        card.classList.replace('flipped-card', 'flip-card'); //set class
+      
+        
       }
     });
   });
