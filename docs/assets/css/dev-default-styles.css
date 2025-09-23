@@ -160,8 +160,8 @@ div#quarto-appendix.default {
   transform-style: preserve-3d;
 }
 
-/* Flip and raise card on on hover */
-.flipped-card:hover .flip-card-inner {
+/* Visual flip and raise card when javascript sets flip-card to flipped-card*/
+.flipped-card .flip-card-inner { /*Previously used .flipped-card:hover*/
   transform: rotateY(180deg);
   z-index: 10;
   margin-bottom: 0px; /*sets default bottom margin, change with js*/
