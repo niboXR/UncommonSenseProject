@@ -293,3 +293,18 @@ div#quarto-appendix.default {
   background-color: var(--primary-color);
 }
 
+/*Responsive stacking*/
+@media (max-width: 600px) {
+  .dropdown-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .dropdown-columns::after {
+    display: none;
+  }
+
+  .two-column-dropdown {
+    width: 100%;
+  }
+}
+
