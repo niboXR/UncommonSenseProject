@@ -234,6 +234,10 @@ div#quarto-appendix.default {
 /*******
 *Navbar Dropdowns*
 *******/
+
+.nav-item.dropdown {
+    background-color: var(--primary-color);
+}
 /* Two-column dropdown styling */
 .two-column-dropdown {
   border: none;
