@@ -235,6 +235,13 @@ div#quarto-appendix.default {
 *Navbar Dropdowns*
 *******/
 
+.nav-link.dropdown-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-color);
+  border-radius: 0.5rem;
+}
+
+
 .nav-item.dropdown {
     background-color: var(--primary-color);
 }
