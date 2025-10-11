@@ -1,0 +1,149 @@
+---
+format: html
+---
+
+::: {.callout-note icon="false"}
+This will be a searchable table of all of the work published to this website.
+:::
+
+
+```{r}
+#| label: rights-data
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(yaml)
+library(knitr)
+library(kableExtra)
+
+# Define %||% fallback
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# Set path
+folder <- "md/Rights"
+files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
+
+# Extract YAML
+extract_yaml <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  if (length(lines) == 0 || lines[1] != "---") return(NULL)
+  
+  end_idx <- which(lines == "---")[2]
+  if (is.na(end_idx)) return(NULL)
+  
+  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
+  metadata <- yaml.load(yaml_content)
+  
+  html_path <- str_replace(path, "\\.md$", ".html") #get html path
+  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
+    
+  tibble(
+    Link = html_path,
+    Right = metadata$title %||% "",
+    Definition = metadata$definition %||% "",
+    Publish = metadata$publish %||% FALSE
+  )
+}
+
+# Build the rights table
+results <- map_dfr(files, extract_yaml) %>%
+  filter(Publish == TRUE) %>%
+  select(Link, Right, Definition)
+
+# Reorder
+results <- results %>%
+  mutate(order = if_else(Right == "Example rights", 0, 1)) %>%
+  arrange(order, Right) %>%
+  select(-order)
+
+```
+
+
+```{r echo=FALSE}
+#| label: searchable-rights-table
+
+suppressWarnings(library(DT))
+library(dplyr)
+library(purrr)
+suppressWarnings(library(markdown))
+
+# Example pipeline
+results %>%
+  mutate(
+    Right = paste0("[", Right, "]", "(", Link, ")"),
+    # Convert markdown to HTML fragments so links, bold, etc. render correctly
+    Right = map_chr(Right, ~markdownToHTML(text = .x, fragment.only = TRUE)),
+    Definition = map_chr(Definition, ~markdownToHTML(text = .x, fragment.only = TRUE)), 
+    Category = "Right"
+  ) %>%
+  select(-Link) %>%
+  datatable(
+    escape = FALSE,  # <- key: allows HTML output from markdown to render properly
+   #extensions = c('Buttons', 'Select'),
+    options = list(
+      # --- Interface layout: buttons, filter row, table, pagination
+    dom = '
+    <"top"
+       <"d-flex justify-content-between align-items-center"
+          <"category-filter">
+          f
+       >
+    >
+    rt
+    <"bottom d-grid w-100"
+       <"bottom-center text-center"
+          <"d-flex flex-column align-items-center justify-content-center"
+             i
+             l
+          >
+       >
+       <"bottom-right d-flex justify-content-end"
+          p
+       >
+    >',
+    buttons = c('copy', 'csv'),
+      pageLength = 25,
+      autoWidth = TRUE,
+      buttons = list(
+        list(extend = 'copy', text = 'Copy'),
+        list(extend = 'csv', text = 'Download CSV')
+      ),
+      
+      # --- Sorting options
+      order = list(list(0, 'asc')), # default sort by first column
+      columnDefs = list(
+        list(targets = "_all", className = "dt-left"),
+        # Make HTML columns sort by text content
+        list(targets = c(1, 2), type = "html"),
+        # 👇 NEW LINE: hide Category column (index 3 — 0-based indexing)
+        list(targets = 3, visible = FALSE)
+      ),
+      
+      # --- Search settings
+      search = list(
+        regex = TRUE,  # allow regex search
+        smart = TRUE,  # improved word-based search
+        caseInsensitive = TRUE
+      ),
+      
+      # --- Filter UI for specific columns (dropdown)
+      initComplete = JS(
+        "function(settings, json) {
+           // Example: add a dropdown filter for 'Category' column (index 3)
+           var column = this.api().column(3);
+          var select = $('<select><option value=\"\">All Categories</option></select>')
+            .appendTo($('.category-filter').empty())  // <- place filter above table
+            .on('change', function() {
+              var val = $.fn.dataTable.util.escapeRegex($(this).val());
+              column.search(val ? '^'+val+'$' : '', true, false).draw();
+            });
+           column.data().unique().sort().each(function(d) {
+             select.append('<option value=\"'+d+'\">'+d+'</option>')
+           });
+         }"
+      )
+    )
+  )
+
+```

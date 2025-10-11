@@ -1,15 +1,17 @@
 project:
-  output-dir: "C:/Users/nickb/Projects/UncommonSense/Website/docs"
+  output-dir: "C:/Users/nickb/Projects/1. Uncommon Sense/Website/docs"
   type: website
   render: 
     - index.qmd
     - feed.qmd
+    - archive.qmd
     - md/Rights
     - md/Issues
     - md/Solutions
 format:
   html:
     css: /assets/css/dev-default-styles.css
+    include-after-body: navbar.html
 website:
   announcement: 
     icon: cone-striped
@@ -20,15 +22,13 @@ website:
   title: "Uncommon Sense"
   navbar:
     toggle-position: right
-    search: true
+    search: false
     left:
-      - text: "Rights"
-        href: index.qmd#rights
-      - text: "Issues"
-        href: index.qmd#issues
-      - text: "Solutions"
-        href: index.qmd#solutions
+      - text: ""
     right: 
+      - text: "Archive"
+        href: archive.qmd
       - text: "Feed"
         href: feed.qmd
-        
+# metadata-files: 
+#   - _navbar.yml

@@ -1,0 +1,11 @@
+# This file can be used to inject new yaml properties - which could be useful if wanting 
+# to render website elements dynamically from a script
+website:
+  navbar:
+    left:
+      - text: "Test nav"
+        menu:
+         - text: "Issues"
+           href: "#"
+         - text: "Solutions"
+           href: "#"

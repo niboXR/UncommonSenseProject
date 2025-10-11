@@ -16,7 +16,7 @@
 *******/
 .navbar {
     background-color: var(--primary-color);
-    color: #dfe5e1;
+    color: var(--secondary-color);
     font-family: var(--primary-font);
 }
 
@@ -206,3 +206,90 @@ div#quarto-appendix.default {
 .flip-card-front h3.anchored { 
   pointer-events: none; /*Another attempt to solve mobile issue*/
 }
+
+/*********************
+*dataTable Formatting*
+*********************/
+ div.bottom {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  div.bottom-center {
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  div.bottom-right {
+    grid-row: 0;
+    justify-self: end;
+    margin-top: 0.25rem;
+    margin-right: 1rem;
+  }
+
+
+/*******
+*Navbar Dropdowns*
+*******/
+/* Two-column dropdown styling */
+.two-column-dropdown {
+  border: none;
+  width: 450px;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+}
+
+.dropdown-definition {
+  color: var(--accent-color);
+  font-size: 1.1em;
+  font-weight: 500;
+  font-family: var(--secondary-font, var(--primary-font));
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.dropdown-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  text-align: center;
+  position: relative;
+
+}
+
+.dropdown-columns::after { /*Adds column seperator*/
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+.dropdown-header {
+  color: var(--accent-color);
+  font-size: 1.25em;
+  font-family: var(--primary-font);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.dropdown-item {
+  color: var(--secondary-color);
+  font-family: var(--primary-font);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-item:hover {
+  background-color: var(--primary-color);
+}
+

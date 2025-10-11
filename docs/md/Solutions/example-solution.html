@@ -88,20 +88,12 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html#rights"> 
-<span class="menu-text">Rights</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html#issues"> 
-<span class="menu-text">Issues</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html#solutions"> 
-<span class="menu-text">Solutions</span></a>
-  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Archive</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../feed.html"> 
 <span class="menu-text">Feed</span></a>
@@ -160,6 +152,67 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector('.navbar-nav.me-auto'); // left side menu
+
+
+
+  if (navbarList) {
+
+    const newItem = document.createElement('li');
+
+    newItem.classList.add('nav-item', 'dropdown');
+
+    newItem.innerHTML = `
+
+      <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <span class="menu-text">Example Rights</span>
+
+      </a>
+
+      <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
+
+      <div class="dropdown-definition"> Example rights guarantee guarantee-group example guarantee</div>
+
+        <li>
+
+          <div class="dropdown-columns">
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Issues</div>
+
+              <a class="dropdown-item" href="/md/Issues/example-issue.html">Example Issue</a>
+
+            </div>
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Solutions</div>
+
+              <a class="dropdown-item" href="/md/Solutions/example-solution.html">Example Solution</a>
+
+            </div>
+
+          </div>
+
+        </li>
+
+      </ul>
+
+    `;
+
+    navbarList.appendChild(newItem);
+
+  }
+
+});
+
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
