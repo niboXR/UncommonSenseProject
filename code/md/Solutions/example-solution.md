@@ -1,4 +1,5 @@
 ---
+right: example rights
 title: Example solution
 summary: "This example solution addresses the example issue by doing this. This is the summary of supporting evidence. This is the summary of the action Congress should take."
 publish: true

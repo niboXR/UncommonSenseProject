@@ -1,6 +1,14 @@
 ---
 format: html
 ---
+```{r setup}
+#| include: false
+
+source("r scripts/create-tables.R")
+source("r scripts/create-navbar.R")
+
+
+```
 
 {{< include md/welcome.md >}}
 
@@ -10,77 +18,6 @@ format: html
 
 **Rights** guarantee *people* **the ability to pursue life, liberty, and happiness**. While the rights we defend will often have legal footing within the United States and internationally, the guiding principle will always be life, liberty, and happiness.
 
-```{r}
-#| label: rights-data
-#| echo: false
-#| message: false
-#| warning: false
-library(tidyverse)
-library(yaml)
-library(knitr)
-library(kableExtra)
-
-# Define %||% fallback
-`%||%` <- function(a, b) if (!is.null(a)) a else b
-
-# Set path
-folder <- "md/Rights"
-files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
-
-# Extract YAML
-extract_yaml <- function(path) {
-  lines <- readLines(path, warn = FALSE)
-  if (length(lines) == 0 || lines[1] != "---") return(NULL)
-  
-  end_idx <- which(lines == "---")[2]
-  if (is.na(end_idx)) return(NULL)
-  
-  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
-  metadata <- yaml.load(yaml_content)
-  
-  html_path <- str_replace(path, "\\.md$", ".html") #get html path
-  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
-    
-  tibble(
-    Link = html_path,
-    Right = metadata$title %||% "",
-    Definition = metadata$definition %||% "",
-    Publish = metadata$publish %||% FALSE
-  )
-}
-
-# Build the rights table
-results <- map_dfr(files, extract_yaml) %>%
-  filter(Publish == TRUE) %>%
-  select(Link, Right, Definition)
-
-# Reorder
-results <- results %>%
-  mutate(order = if_else(Right == "Example rights", 0, 1)) %>%
-  arrange(order, Right) %>%
-  select(-order)
-
-
-```
-
-```{r}
-#| label: rights-table
-#| eval: false
-#| include: false
-
-# Render Table
-results %>%
-  mutate(
-    # Right = map_chr(Link, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE)),
-    Definition = map_chr(Definition, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
-    select(-Link) %>%
-  kable("html",
-        escape = FALSE) %>%
-  kable_styling(full_width = TRUE,
-                bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                )
-
-```
 
 ```{r echo=FALSE, results='asis'}
 #| label: rights-cards
@@ -89,18 +26,17 @@ library(knitr)
 # Loop over results and output raw HTML using asis_output
 cat('<div class="card-grid">')
 
-for (i in seq_len(nrow(results))) {
+for (i in seq_len(nrow(rights))) {
   cat(asis_output(sprintf('
 <div class="right-card">
   <h3>%s</h3>
   <p>%s</p>
   <a href="%s">Rationale and sources ↗</a>
 </div>
-', results$Right[i], results$Definition[i], results$Link[i])))
+', rights$Right[i], rights$DefinitionHTML[i], rights$Link[i])))
 }
 cat('</div>')
 ```
-
 
 ------------------------------------------------------------------------
 
@@ -108,70 +44,14 @@ cat('</div>')
 
 The issues we cover will be cases where individuals, organizations, or governments systemically infringe upon the *rights* of an individual or group of individuals.
 
-```{r}
-#| label: issues-data
-#| echo: false
-#| message: false
-#| warning: false
-
-
-# Define %||% fallback
-`%||%` <- function(a, b) if (!is.null(a)) a else b
-
-# Set path
-folder <- "md/Issues"
-files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
-
-# Extract YAML
-extract_yaml <- function(path) {
-  lines <- readLines(path, warn = FALSE)
-  if (length(lines) == 0 || lines[1] != "---") return(NULL)
-  
-  end_idx <- which(lines == "---")[2]
-  if (is.na(end_idx)) return(NULL)
-  
-  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
-  metadata <- yaml.load(yaml_content)
-  
-  html_path <- str_replace(path, "\\.md$", ".html") #get html path
-  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
-
-  
-  tibble(
-    Link = html_path,
-    Issue = metadata$title %||% "",
-    Summary = metadata$summary %||% "",
-    Publish = metadata$publish %||% FALSE
-  )
-}
-
-# Build table
-results <- map_dfr(files, extract_yaml) %>%
-  filter(Publish == TRUE) %>%
-  select(Link, Issue, Summary)
-
-```
-
-```{r}
-#| label: issues-table
-#| eval: false
-#| include: false
-
-# Render Table
-results %>%
-  mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
-  kable("html", escape = FALSE) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-```
-
 ```{r echo=FALSE, results='asis'}
-#| label: issues-cards
+#| label: issues-flip-cards
 library(knitr)
 
 # Loop over results and output raw HTML using asis_output
 cat('<div class="flip-card-grid">')
 
-for (i in seq_len(nrow(results))) {
+for (i in seq_len(nrow(issues))) {
   cat(asis_output(sprintf('
 <div class="flip-card">
 <div class="flip-card-inner">
@@ -185,7 +65,7 @@ for (i in seq_len(nrow(results))) {
 </div>
 </div>
 </div>
-', results$Issue[i], results$Summary[i], results$Link[i])))
+', issues$Title[i], issues$SummaryHTML[i], issues$Link[i])))
 }
 cat('</div>')
 ```
@@ -196,70 +76,15 @@ cat('</div>')
 
 The solutions we cover will be public policy or laws that can be passed by congress to remedy an issue.
 
-```{r}
-#| label: solutions-data
-#| echo: false
-#| message: false
-#| warning: false
-
-
-# Define %||% fallback
-`%||%` <- function(a, b) if (!is.null(a)) a else b
-
-# Set path
-folder <- "md/Solutions"
-files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
-
-# Extract YAML
-extract_yaml <- function(path) {
-  lines <- readLines(path, warn = FALSE)
-  if (length(lines) == 0 || lines[1] != "---") return(NULL)
-  
-  end_idx <- which(lines == "---")[2]
-  if (is.na(end_idx)) return(NULL)
-  
-  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
-  metadata <- yaml.load(yaml_content)
-
-  html_path <- str_replace(path, "\\.md$", ".html") #get html path
-  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
-  
-  tibble(
-    Link = html_path,
-    Solution = metadata$title %||% "",
-    Summary = metadata$summary %||% "",
-    Publish = metadata$publish %||% FALSE
-  )
-}
-
-# Build table
-results <- map_dfr(files, extract_yaml) %>%
-  filter(Publish == TRUE) %>%
-  select(Link, Solution, Summary)
-
-
-```
-
-```{r}
-#| label: solutions-table
-#| eval: false
-#| include: false
-
-# Render Table
-results %>%
-  mutate(Summary = map_chr(Summary, ~markdown::markdownToHTML(text = .x, fragment.only = TRUE))) %>%
-  kable("html", escape = FALSE) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-```
 
 ```{r echo=FALSE, results='asis'}
-#| label: solutions-cards
+#| label: solutions-flip-cards
 library(knitr)
 
 # Loop over results and output raw HTML using asis_output
 cat('<div class="flip-card-grid">')
 
-for (i in seq_len(nrow(results))) {
+for (i in seq_len(nrow(solutions))) {
   cat(asis_output(sprintf('
 <div class="flip-card">
 <div class="flip-card-inner">
@@ -273,7 +98,7 @@ for (i in seq_len(nrow(results))) {
 </div>
 </div>
 </div>
-', results$Solution[i], results$Summary[i], results$Link[i])))
+', solutions$Title[i], solutions$SummaryHTML[i], solutions$Link[i])))
 }
 cat('</div>')
 ```

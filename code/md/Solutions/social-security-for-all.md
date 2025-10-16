@@ -1,13 +1,8 @@
 ---
+right: economic rights
 title: Social security for all
-type: solution
-issue: War on poverty
-author: Nick B
-author-bio: "[Nick B](bio.md)"
-pub-status: unpublished
-pub-date: 
-revised-date: 
 summary: work in progress
+publish: false
 ---
 **This is an example solution**. This space would typically be use to summarize the solution
 

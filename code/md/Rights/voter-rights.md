@@ -1,6 +1,6 @@
 ---
 title: Voter rights
-definition: "**Voter rights** guarantee *citizens* **the ability to participate freely, fairly, and equally in elections**"
+summary: "Voter rights guarantee *citizens* **the ability to participate freely, fairly, and equally in elections**"
 publish: true
 ---
 

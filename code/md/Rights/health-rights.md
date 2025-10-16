@@ -1,6 +1,6 @@
 ---
 title: Health rights
-definition: "**Health rights** guarantee *people* **the highest attainable standard of health**"
+summary: "Health rights guarantee *people* **the highest attainable standard of health**"
 publish: true
 ---
 **Health rights** guarantee *people* **the highest attainable standard of health** [^1]

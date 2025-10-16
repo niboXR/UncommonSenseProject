@@ -1,6 +1,6 @@
 ---
-title: Student loan debt
 right: education rights
+title: Student loan debt
 summary: work in progress
 publish: false
 ---

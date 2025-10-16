@@ -1,6 +1,6 @@
 ---
 title: Education rights
-definition: "**Education rights** guarantee *people* **everyone receives the best possible primary education and has access to secondary education**"
+summary: "Education rights guarantee *people* **everyone receives the best possible primary education and has access to secondary education**"
 publish: true
 ---
 

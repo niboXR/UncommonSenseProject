@@ -1,6 +1,6 @@
 ---
-title: The two party system
 right: voter rights
+title: The two party system
 summary: work in progress
 publish: false
 ---

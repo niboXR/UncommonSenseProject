@@ -1,0 +1,8 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const navbarLeft = document.querySelector(".navbar-nav.me-auto");
+  if (navbarLeft) {
+    navbarLeft.insertAdjacentHTML("beforeend", `{% include "dev-navbar.html" %}`);
+  }
+});
+</script>

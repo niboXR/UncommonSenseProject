@@ -1,11 +1,8 @@
 ---
+right: economic rights
 title: Housing First
-type: solution
-issue: War on poverty
-author: Nick B
-author-bio: "[Nick B](bio.md)"
-summary:
-publish:
+summary: work in progress
+publish: false
 ---
 
 # The Solution.

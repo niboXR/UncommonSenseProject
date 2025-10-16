@@ -3,7 +3,7 @@ project:
   type: website
   render: 
     - index.qmd
-    - feed.qmd
+    - journal.qmd
     - archive.qmd
     - md/Rights
     - md/Issues
@@ -11,7 +11,7 @@ project:
 format:
   html:
     css: /assets/css/dev-default-styles.css
-    include-after-body: navbar.html
+    include-after-body: dev-navbar.html #Functional example navbar
 website:
   announcement: 
     icon: cone-striped
@@ -21,14 +21,24 @@ website:
     type: warning
   title: "Uncommon Sense"
   navbar:
+    collapse-below: lg
     toggle-position: right
     search: false
     left:
       - text: ""
-    right: 
-      - text: "Archive"
-        href: archive.qmd
-      - text: "Feed"
-        href: feed.qmd
+    right:
+      - text: "More"
+        menu: 
+          - archive.qmd
+          - journal.qmd
+      
+  # sidebar: 
+  #   - id: more
+  #     title: "More"
+  #     contents:
+  #       - text: "Archive"
+  #         href: archive.qmd
+  #       - text: "Feed"
+  #         href: feed.qmd
 # metadata-files: 
 #   - _navbar.yml

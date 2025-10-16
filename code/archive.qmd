@@ -1,84 +1,44 @@
 ---
+title: "Archive"
 format: html
 ---
+```{r setup}
+#| include: false
 
-::: {.callout-note icon="false"}
-This will be a searchable table of all of the work published to this website.
-:::
+source("r scripts/create-tables.R")
+source("r scripts/create-navbar.R")
 
-
-```{r}
-#| label: rights-data
-#| echo: false
-#| message: false
-#| warning: false
-library(tidyverse)
-library(yaml)
-library(knitr)
-library(kableExtra)
-
-# Define %||% fallback
-`%||%` <- function(a, b) if (!is.null(a)) a else b
-
-# Set path
-folder <- "md/Rights"
-files <- list.files(folder, pattern = "\\.md$", full.names = TRUE)
-
-# Extract YAML
-extract_yaml <- function(path) {
-  lines <- readLines(path, warn = FALSE)
-  if (length(lines) == 0 || lines[1] != "---") return(NULL)
-  
-  end_idx <- which(lines == "---")[2]
-  if (is.na(end_idx)) return(NULL)
-  
-  yaml_content <- paste(lines[2:(end_idx - 1)], collapse = "\n")
-  metadata <- yaml.load(yaml_content)
-  
-  html_path <- str_replace(path, "\\.md$", ".html") #get html path
-  markdown_link <- sprintf("[%s](%s)", metadata$title %||% "", html_path)
-    
-  tibble(
-    Link = html_path,
-    Right = metadata$title %||% "",
-    Definition = metadata$definition %||% "",
-    Publish = metadata$publish %||% FALSE
-  )
-}
-
-# Build the rights table
-results <- map_dfr(files, extract_yaml) %>%
-  filter(Publish == TRUE) %>%
-  select(Link, Right, Definition)
-
-# Reorder
-results <- results %>%
-  mutate(order = if_else(Right == "Example rights", 0, 1)) %>%
-  arrange(order, Right) %>%
-  select(-order)
 
 ```
 
+::: {.callout-note icon="false"}
+This is an archive of everything published by Uncommon Sense Project. You can filter by category and search by text.
+:::
+
+---
 
 ```{r echo=FALSE}
-#| label: searchable-rights-table
+#| label: searchable-archive
 
 suppressWarnings(library(DT))
 library(dplyr)
 library(purrr)
 suppressWarnings(library(markdown))
 
-# Example pipeline
-results %>%
+
+archive %>%
+  select(-Right, -SummaryMD) %>%
+  rename(Summary = SummaryHTML) %>%
+  filter(!grepl("Example", Title)) %>%
+  filter(Publish == TRUE) %>% select(-Publish) %>%
   mutate(
-    Right = paste0("[", Right, "]", "(", Link, ")"),
+    Title = paste0("[", Title, "]", "(", Link, ")"),
     # Convert markdown to HTML fragments so links, bold, etc. render correctly
-    Right = map_chr(Right, ~markdownToHTML(text = .x, fragment.only = TRUE)),
-    Definition = map_chr(Definition, ~markdownToHTML(text = .x, fragment.only = TRUE)), 
-    Category = "Right"
+    Title = map_chr(Title, ~markdownToHTML(text = .x, fragment.only = TRUE))
   ) %>%
   select(-Link) %>%
   datatable(
+    rownames = FALSE,
     escape = FALSE,  # <- key: allows HTML output from markdown to render properly
    #extensions = c('Buttons', 'Select'),
     options = list(
@@ -110,14 +70,10 @@ results %>%
         list(extend = 'csv', text = 'Download CSV')
       ),
       
-      # --- Sorting options
-      order = list(list(0, 'asc')), # default sort by first column
       columnDefs = list(
         list(targets = "_all", className = "dt-left"),
-        # Make HTML columns sort by text content
-        list(targets = c(1, 2), type = "html"),
-        # 👇 NEW LINE: hide Category column (index 3 — 0-based indexing)
-        list(targets = 3, visible = FALSE)
+        list(targets = c(1, 2), type = "html"), #Make HTML columns sort by text content
+        list(targets = 0, visible = FALSE) #hide Category column (index 3 — 0-based indexing)
       ),
       
       # --- Search settings
@@ -131,7 +87,7 @@ results %>%
       initComplete = JS(
         "function(settings, json) {
            // Example: add a dropdown filter for 'Category' column (index 3)
-           var column = this.api().column(3);
+           var column = this.api().column(0);
           var select = $('<select><option value=\"\">All Categories</option></select>')
             .appendTo($('.category-filter').empty())  // <- place filter above table
             .on('change', function() {

@@ -1,6 +1,6 @@
 ---
-title: Inaccessible higher education
 right: education rights
+title: Inaccessible higher education
 summary: work in progress
 publish: false
 ---

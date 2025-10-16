@@ -152,31 +152,35 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
-<script>
 
-document.addEventListener("DOMContentLoaded", function() {
 
-  const navbarList = document.querySelector('.navbar-nav.me-auto'); // left side menu
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector(".navbar-nav.me-auto");
 
 
 
   if (navbarList) {
 
-    const newItem = document.createElement('li');
+    const newItem = document.createElement("li");
 
-    newItem.classList.add('nav-item', 'dropdown');
+    newItem.classList.add("nav-item", "dropdown");
 
     newItem.innerHTML = `
 
       <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
 
-        <span class="menu-text">Example Rights</span>
+        <span class="menu-text">Voter rights</span>
 
       </a>
 
       <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
 
-      <div class="dropdown-definition"> Example rights guarantee guarantee-group example guarantee</div>
+        <li><div class="dropdown-definition"><p>Voter rights guarantee <em>citizens</em> <strong>the ability to participate freely, fairly, and equally in elections</strong></p>
+
+</div></li>
 
         <li>
 
@@ -186,33 +190,310 @@ document.addEventListener("DOMContentLoaded", function() {
 
               <div class="dropdown-header">Issues</div>
 
-              <a class="dropdown-item" href="/md/Issues/example-issue.html">Example Issue</a>
+
+
+  <a class="dropdown-item" href="md/Issues/legal-corruption.html">Legal corruption</a><a class="dropdown-item" href="md/Issues/party-duopoly.html">The two party system</a><a class="dropdown-item" href="md/Issues/unequal-voting-power.html">Unequal voting power</a>  
 
             </div>
 
             <div class="dropdown-col">
 
-              <div class="dropdown-header">Solutions</div>
+            <div class="dropdown-header">Solutions</div>
 
-              <a class="dropdown-item" href="/md/Solutions/example-solution.html">Example Solution</a>
+  <a class="dropdown-item" href="md/Solutions/citizens-united.html">Overturn Citizens United</a><a class="dropdown-item" href="md/Solutions/national-popular-vote.html">National popular vote</a><a class="dropdown-item" href="md/Solutions/ranked-choice-voting.html">Ranked choice voting</a>  
+
+              </div>
 
             </div>
 
-          </div>
+          </li>
 
-        </li>
+        </ul>
 
-      </ul>
+      `;
 
-    `;
+      navbarList.appendChild(newItem);
 
-    navbarList.appendChild(newItem);
+    }
 
-  }
+  });
 
-});
+  </script>
 
-</script>
+  
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector(".navbar-nav.me-auto");
+
+
+
+  if (navbarList) {
+
+    const newItem = document.createElement("li");
+
+    newItem.classList.add("nav-item", "dropdown");
+
+    newItem.innerHTML = `
+
+      <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <span class="menu-text">Health rights</span>
+
+      </a>
+
+      <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
+
+        <li><div class="dropdown-definition"><p>Health rights guarantee <em>people</em> <strong>the highest attainable standard of health</strong></p>
+
+</div></li>
+
+        <li>
+
+          <div class="dropdown-columns">
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Issues</div>
+
+
+
+  <a class="dropdown-item" href="md/Issues/healthcare-access.html">Access to healthcare</a><a class="dropdown-item" href="md/Issues/healthcare-costs.html">The cost of healthcare</a>  
+
+            </div>
+
+            <div class="dropdown-col">
+
+            <div class="dropdown-header">Solutions</div>
+
+  <a class="dropdown-item" href="md/Solutions/medicare-for-all.html">Medicare for all</a>  
+
+              </div>
+
+            </div>
+
+          </li>
+
+        </ul>
+
+      `;
+
+      navbarList.appendChild(newItem);
+
+    }
+
+  });
+
+  </script>
+
+  
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector(".navbar-nav.me-auto");
+
+
+
+  if (navbarList) {
+
+    const newItem = document.createElement("li");
+
+    newItem.classList.add("nav-item", "dropdown");
+
+    newItem.innerHTML = `
+
+      <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <span class="menu-text">Education rights</span>
+
+      </a>
+
+      <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
+
+        <li><div class="dropdown-definition"><p>Education rights guarantee <em>people</em> <strong>everyone receives the best possible primary education and has access to secondary education</strong></p>
+
+</div></li>
+
+        <li>
+
+          <div class="dropdown-columns">
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Issues</div>
+
+
+
+  <a class="dropdown-item" href="md/Issues/inaccessible-higher-ed.html">Inaccessible higher education</a><a class="dropdown-item" href="md/Issues/student-loan-debt.html">Student loan debt</a>  
+
+            </div>
+
+            <div class="dropdown-col">
+
+            <div class="dropdown-header">Solutions</div>
+
+  <a class="dropdown-item" href="md/Solutions/higher-ed-for-all.html">Tuition free higher education</a>  
+
+              </div>
+
+            </div>
+
+          </li>
+
+        </ul>
+
+      `;
+
+      navbarList.appendChild(newItem);
+
+    }
+
+  });
+
+  </script>
+
+  
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector(".navbar-nav.me-auto");
+
+
+
+  if (navbarList) {
+
+    const newItem = document.createElement("li");
+
+    newItem.classList.add("nav-item", "dropdown");
+
+    newItem.innerHTML = `
+
+      <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <span class="menu-text">Economic rights</span>
+
+      </a>
+
+      <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
+
+        <li><div class="dropdown-definition"><p>Economic rights guarantee <em>people</em> <strong>the ability to secure resources needed to meet their basic needs</strong></p>
+
+</div></li>
+
+        <li>
+
+          <div class="dropdown-columns">
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Issues</div>
+
+
+
+  <a class="dropdown-item" href="md/Issues/war-on-poverty.html">War on poverty</a>  
+
+            </div>
+
+            <div class="dropdown-col">
+
+            <div class="dropdown-header">Solutions</div>
+
+  <a class="dropdown-item" href="md/Solutions/housing-first.html">Housing First</a><a class="dropdown-item" href="md/Solutions/social-security-for-all.html">Social security for all</a>  
+
+              </div>
+
+            </div>
+
+          </li>
+
+        </ul>
+
+      `;
+
+      navbarList.appendChild(newItem);
+
+    }
+
+  });
+
+  </script>
+
+  
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+  const navbarList = document.querySelector(".navbar-nav.me-auto");
+
+
+
+  if (navbarList) {
+
+    const newItem = document.createElement("li");
+
+    newItem.classList.add("nav-item", "dropdown");
+
+    newItem.innerHTML = `
+
+      <a class="nav-link dropdown-toggle" href="#" id="nav-menu-extra" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <span class="menu-text">Data rights</span>
+
+      </a>
+
+      <ul class="dropdown-menu two-column-dropdown" aria-labelledby="nav-menu-extra">
+
+        <li><div class="dropdown-definition"><p>Data rights guarantee <em>people</em> <strong>protections against misuse or unauthorized use of personal data</strong></p>
+
+</div></li>
+
+        <li>
+
+          <div class="dropdown-columns">
+
+            <div class="dropdown-col">
+
+              <div class="dropdown-header">Issues</div>
+
+
+
+  <a class="dropdown-item" href="md/Issues/surveillance-commercial.html">Commercial surveillance</a><a class="dropdown-item" href="md/Issues/surveillance-govt.html">Unwarranted mass surveillance</a>  
+
+            </div>
+
+            <div class="dropdown-col">
+
+            <div class="dropdown-header">Solutions</div>
+
+  <a class="dropdown-item" href="md/Solutions/digital-bill-of-rights.html">Digital bill of rights</a>  
+
+              </div>
+
+            </div>
+
+          </li>
+
+        </ul>
+
+      `;
+
+      navbarList.appendChild(newItem);
+
+    }
+
+  });
+
+  </script>
+
+  
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -1,6 +1,6 @@
 ---
-title: Legal corruption
 right: voter rights
+title: Legal corruption
 summary: work in progress
 publish: false
 ---

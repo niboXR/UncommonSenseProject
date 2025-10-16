@@ -1,6 +1,6 @@
 ---
 title: Data rights
-definition: "**Data rights** guarantee *people* **protections against misuse or unauthorized use of personal data**"
+summary: "Data rights guarantee *people* **protections against misuse or unauthorized use of personal data**"
 publish: true
 ---
 

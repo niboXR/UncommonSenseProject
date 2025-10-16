@@ -26,7 +26,6 @@
   }
 }
 
-
 /****
 *TOC*
 ****/
@@ -235,6 +234,11 @@ div#quarto-appendix.default {
 *Navbar Dropdowns*
 *******/
 
+.dropdown-menu {
+  border: none;
+  background-color: var(--primary-color);
+}
+
 .nav-link.dropdown-toggle {
   outline: none !important;
   box-shadow: none !important;
@@ -256,7 +260,7 @@ div#quarto-appendix.default {
 }
 
 .dropdown-definition {
-  color: var(--accent-color);
+  color: var(--secondary-color);
   font-size: 1.1em;
   font-weight: 500;
   font-family: var(--secondary-font, var(--primary-font));
@@ -287,7 +291,7 @@ div#quarto-appendix.default {
 
 .dropdown-header {
   color: var(--accent-color);
-  font-size: 1.25em;
+  font-size: 1.25em !important;
   font-family: var(--primary-font);
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -296,6 +300,13 @@ div#quarto-appendix.default {
 
 .dropdown-item {
   color: var(--secondary-color);
+  font-family: var(--primary-font);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-item-unpublished {
+  color: var(--accent-color);
   font-family: var(--primary-font);
   font-weight: 600;
   margin-bottom: 0.5rem;

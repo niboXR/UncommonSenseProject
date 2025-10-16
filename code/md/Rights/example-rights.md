@@ -1,6 +1,6 @@
 ---
 title: Example rights
-definition: "**Example rights** guarantee *guarantee-group* **example guarantee**"
+summary: "Example rights guarantee *guarantee-group* **example guarantee**"
 publish: true
 pub-date: 2025-01-20
 ---

@@ -2,7 +2,7 @@
 title: Unwarranted mass surveillance
 right: data rights
 summary: "*Data rights* protect people from the unauthorized use of their personal information. The government has exploited section 702 of the Foreign Intelligence Surveillance Act to conduct warrantless surveillance of U.S. citizens and section 215 of the Patriot Act to engage in mass surveillance of phone and email records, internet searches, and credit card transactions. These provisions should be repealed, privacy laws should be modernized, and records obtained without a warrant should be destroyed."
-publish: true
+publish: false
 ---
 
 *Data rights* protect people from the unauthorized use of their personal information. The government has exploited section 702 of the Foreign Intelligence Surveillance Act to conduct warrantless surveillance of U.S. citizens and section 215 of the Patriot Act to engage in mass surveillance of phone and email records, internet searches, and credit card transactions. These provisions should be repealed, privacy laws should be modernized, and records obtained without a warrant should be destroyed.

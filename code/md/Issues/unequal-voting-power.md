@@ -1,6 +1,6 @@
 ---
-title: Unequal voting power
 right: voter rights
+title: Unequal voting power
 summary: work in progress
 publish: false
 ---

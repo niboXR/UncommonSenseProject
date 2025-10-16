@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Journal"
 format: html
 toc: true
 toc-title: Entry
@@ -9,7 +9,7 @@ toc-title: Entry
 ```
 
 ::: {.callout-note icon="false"}
-This project is about addressing longstanding issues in American public policy and law, rather than reacting to current affairs. That said, some things should be said out loud. Those things will be said here.
+This project is about addressing longstanding issues in American public policy and law, rather than reacting to current affairs. That said, some events should be documented in real time. Those events will be journaled here.
 :::
 
 # August 25th, 2025
