@@ -90,14 +90,21 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../archive.html"> 
-<span class="menu-text">Archive</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-more" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">More</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-more">    
+        <li>
+    <a class="dropdown-item" href="../../archive.html">
+ <span class="dropdown-text">Archive</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../feed.html"> 
-<span class="menu-text">Feed</span></a>
+        <li>
+    <a class="dropdown-item" href="../../journal.html">
+ <span class="dropdown-text">Journal</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -166,6 +173,18 @@ ul.task-list li input[type="checkbox"] {
 </main> <!-- /main -->
 
 
+      <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+          const qs = document.getElementById("quarto-search");
+
+          if (qs) qs.remove();
+
+        });
+
+      </script>
+
   <script>
 
   document.addEventListener("DOMContentLoaded", function() {
@@ -204,7 +223,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-  <a class="dropdown-item" href="md/Issues/legal-corruption.html">Legal corruption</a><a class="dropdown-item" href="md/Issues/party-duopoly.html">The two party system</a><a class="dropdown-item" href="md/Issues/unequal-voting-power.html">Unequal voting power</a>  
+  <div class="dropdown-item-unpublished">Legal corruption</div><div class="dropdown-item-unpublished">The two party system</div><div class="dropdown-item-unpublished">Unequal voting power</div>  
 
             </div>
 
@@ -212,7 +231,7 @@ ul.task-list li input[type="checkbox"] {
 
             <div class="dropdown-header">Solutions</div>
 
-  <a class="dropdown-item" href="md/Solutions/citizens-united.html">Overturn Citizens United</a><a class="dropdown-item" href="md/Solutions/national-popular-vote.html">National popular vote</a><a class="dropdown-item" href="md/Solutions/ranked-choice-voting.html">Ranked choice voting</a>  
+  <div class="dropdown-item-unpublished">Overturn Citizens United</div><div class="dropdown-item-unpublished">National popular vote</div><div class="dropdown-item-unpublished">Ranked choice voting</div>  
 
               </div>
 
@@ -272,7 +291,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-  <a class="dropdown-item" href="md/Issues/healthcare-access.html">Access to healthcare</a><a class="dropdown-item" href="md/Issues/healthcare-costs.html">The cost of healthcare</a>  
+  <div class="dropdown-item-unpublished">Access to healthcare</div><div class="dropdown-item-unpublished">The cost of healthcare</div>  
 
             </div>
 
@@ -280,7 +299,7 @@ ul.task-list li input[type="checkbox"] {
 
             <div class="dropdown-header">Solutions</div>
 
-  <a class="dropdown-item" href="md/Solutions/medicare-for-all.html">Medicare for all</a>  
+  <div class="dropdown-item-unpublished">Medicare for all</div>  
 
               </div>
 
@@ -340,7 +359,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-  <a class="dropdown-item" href="md/Issues/inaccessible-higher-ed.html">Inaccessible higher education</a><a class="dropdown-item" href="md/Issues/student-loan-debt.html">Student loan debt</a>  
+  <div class="dropdown-item-unpublished">Inaccessible higher education</div><div class="dropdown-item-unpublished">Student loan debt</div>  
 
             </div>
 
@@ -348,7 +367,7 @@ ul.task-list li input[type="checkbox"] {
 
             <div class="dropdown-header">Solutions</div>
 
-  <a class="dropdown-item" href="md/Solutions/higher-ed-for-all.html">Tuition free higher education</a>  
+  <div class="dropdown-item-unpublished">Tuition free higher education</div>  
 
               </div>
 
@@ -408,7 +427,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-  <a class="dropdown-item" href="md/Issues/war-on-poverty.html">War on poverty</a>  
+  <div class="dropdown-item-unpublished">War on poverty</div>  
 
             </div>
 
@@ -416,7 +435,7 @@ ul.task-list li input[type="checkbox"] {
 
             <div class="dropdown-header">Solutions</div>
 
-  <a class="dropdown-item" href="md/Solutions/housing-first.html">Housing First</a><a class="dropdown-item" href="md/Solutions/social-security-for-all.html">Social security for all</a>  
+  <div class="dropdown-item-unpublished">Housing First</div><div class="dropdown-item-unpublished">Social security for all</div>  
 
               </div>
 
@@ -476,7 +495,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-  <a class="dropdown-item" href="md/Issues/surveillance-commercial.html">Commercial surveillance</a><a class="dropdown-item" href="md/Issues/surveillance-govt.html">Unwarranted mass surveillance</a>  
+  <a class="dropdown-item" href="md/Issues/surveillance-commercial.html">Commercial surveillance</a><div class="dropdown-item-unpublished">Unwarranted mass surveillance</div>  
 
             </div>
 
@@ -484,7 +503,7 @@ ul.task-list li input[type="checkbox"] {
 
             <div class="dropdown-header">Solutions</div>
 
-  <a class="dropdown-item" href="md/Solutions/digital-bill-of-rights.html">Digital bill of rights</a>  
+  <div class="dropdown-item-unpublished">Digital bill of rights</div>  
 
               </div>
 

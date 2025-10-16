@@ -26,6 +26,113 @@
   }
 }
 
+  /*******
+  *Navbar Dropdowns*
+  *******/
+  
+  .dropdown-menu {
+    border: none;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+  }
+  
+  .dropdown-text {
+    font-family: var(--primary-font);
+    font-weight: 400 !important;
+  }
+  
+  .nav-link.dropdown-toggle {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent; /* removes blue tap flash */
+  }
+  
+  
+  
+  .nav-item.dropdown {
+      background-color: var(--primary-color);
+  }
+  /* Two-column dropdown styling */
+  .two-column-dropdown {
+    border: none;
+    width: 450px;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--primary-color);
+
+  }
+  
+  .dropdown-definition {
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    font-weight: 500;
+    font-family: var(--secondary-font, var(--primary-font));
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  
+  .dropdown-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+    position: relative;
+  
+  }
+  
+  .dropdown-columns::after { /*Adds column seperator*/
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 50%;
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  
+  .dropdown-header {
+    color: var(--accent-color);
+    font-size: 1.25em !important;
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  
+  .dropdown-item {
+    color: var(--secondary-color);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dropdown-item-unpublished {
+    color: var(--accent-color);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--primary-color);
+  }
+  
+  /*Responsive stacking*/
+  @media (max-width: 600px) {
+    .dropdown-columns {
+      grid-template-columns: 1fr;
+    }
+  
+    .dropdown-columns::after {
+      display: none;
+    }
+  
+    .two-column-dropdown {
+      width: 100%;
+    }
+  }
+
 /****
 *TOC*
 ****/
@@ -228,106 +335,3 @@ div#quarto-appendix.default {
     margin-top: 0.25rem;
     margin-right: 1rem;
   }
-
-
-/*******
-*Navbar Dropdowns*
-*******/
-
-.dropdown-menu {
-  border: none;
-  background-color: var(--primary-color);
-}
-
-.nav-link.dropdown-toggle {
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color: transparent; /* removes blue tap flash */
-}
-
-
-
-.nav-item.dropdown {
-    background-color: var(--primary-color);
-}
-/* Two-column dropdown styling */
-.two-column-dropdown {
-  border: none;
-  width: 450px;
-  padding: 1.25rem 1.5rem;
-  background-color: var(--primary-color);
-  border-radius: 1rem;
-}
-
-.dropdown-definition {
-  color: var(--secondary-color);
-  font-size: 1.1em;
-  font-weight: 500;
-  font-family: var(--secondary-font, var(--primary-font));
-  text-align: center;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
-
-.dropdown-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  text-align: center;
-  position: relative;
-
-}
-
-.dropdown-columns::after { /*Adds column seperator*/
-  content: "";
-  position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  left: 50%;
-  width: 1px;
-  background: rgba(255,255,255,0.15);
-}
-
-.dropdown-header {
-  color: var(--accent-color);
-  font-size: 1.25em !important;
-  font-family: var(--primary-font);
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-}
-
-.dropdown-item {
-  color: var(--secondary-color);
-  font-family: var(--primary-font);
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.dropdown-item-unpublished {
-  color: var(--accent-color);
-  font-family: var(--primary-font);
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.dropdown-item:hover {
-  background-color: var(--primary-color);
-}
-
-/*Responsive stacking*/
-@media (max-width: 600px) {
-  .dropdown-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .dropdown-columns::after {
-    display: none;
-  }
-
-  .two-column-dropdown {
-    width: 100%;
-  }
-}
-

@@ -13,13 +13,13 @@ format:
     css: /assets/css/dev-default-styles.css
     include-after-body: dev-navbar.html #Functional example navbar
 website:
+  title: "Uncommon Sense"
   announcement: 
     icon: cone-striped
     dismissable: true
     content: "This website is under active development"
     position: below-navbar
     type: warning
-  title: "Uncommon Sense"
   navbar:
     collapse-below: lg
     toggle-position: right
@@ -31,7 +31,7 @@ website:
         menu: 
           - archive.qmd
           - journal.qmd
-      
+search: false
   # sidebar: 
   #   - id: more
   #     title: "More"

@@ -4,6 +4,16 @@
 setwd("C:/Users/nickb/Projects/1. Uncommon Sense/Website/code")
 
 html <- ""
+
+html <- paste0(html, '
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const qs = document.getElementById("quarto-search");
+          if (qs) qs.remove();
+        });
+      </script>'
+)
+
 for (i in 1:nrow(rights)) {
   
   
