@@ -17,7 +17,7 @@ website:
   announcement: 
     icon: cone-striped
     dismissable: true
-    content: "This website is under active development"
+    content: "This website is under active development. Report an issue [here](https://github.com/niboXR/UncommonSenseProject/issues)."
     position: below-navbar
     type: warning
   navbar:
