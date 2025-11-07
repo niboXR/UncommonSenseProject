@@ -1,75 +1,165 @@
-body {
-    margin: 0;
-    background-color: #dfe5e1; /* Set background color */
-    font-family: 'Arial', sans-serif; /* Set font family for entire body */
-    display: flex; /* Add this line to use Flexbox layout */
-    flex-direction: column; /* Align items in a column */
-    min-height: 100vh; /* Set minimum height equal to viewport height */
-    padding: 0; /* Remove default padding */
-    padding-top:100px; 
+:root {
+  --primary-color: #5D7E6A;
+  --secondary-color: #dfe5e1;
+  --accent-color: #2e4d37;
+  --background-color: #dfe5e1;
+  --white: #f9f9f9;
+  /*--primary-font: 'Courier New', monospace;*/
+  /*--primary-font: Arial', sans-serif*/
+  --primary-font: 'Times New Roman', serif;
+  
+  
 }
 
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #5D7E6A;
-    color: #dfe5e1;
-    height: 100px;
-    display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center;
-    align-items: center;
-}
-.header-links {
-    display: flex;
-    justify-content: space-between; /* Evenly distribute the links */
+
+
+
+
+/*******
+*NAVBAR*
+*******/
+.navbar {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: var(--primary-font);
 }
 
-.header-link {
-    margin: 0 10px; /* Add 10px of space between each link, on both sides */
+.navbar a {
+  &:hover { 
+    color: var(--accent-color); /* Changes the text color to a darker shade on hover */
+  }
 }
 
-.footnotes {
-    margin-top: -2em;
-}
-
-.footnotes hr {
+  /*******
+  *Navbar Dropdowns*
+  *******/
+  
+  .dropdown-menu {
     border: none;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+  }
+  
+  .dropdown-text {
+    font-family: var(--primary-font);
+    font-weight: 400 !important;
+  }
+  
+  .nav-link.dropdown-toggle {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent; /* removes blue tap flash */
+  }
+  
+  
+  
+  .nav-item.dropdown {
+      background-color: var(--primary-color);
+  }
+  /* Two-column dropdown styling */
+  .two-column-dropdown {
+    border: none;
+    width: 450px;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--primary-color);
+
+  }
+  
+  .dropdown-definition {
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    font-weight: 500;
+    font-family: var(--secondary-font, var(--primary-font));
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  
+  .dropdown-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+    position: relative;
+  
+  }
+  
+  .dropdown-columns::after { /*Adds column seperator*/
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 50%;
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  
+  .dropdown-header {
+    color: var(--accent-color);
+    font-size: 1.25em !important;
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  
+  .dropdown-item {
+    color: var(--secondary-color);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dropdown-item-unpublished {
+    color: var(--accent-color);
+    font-family: var(--primary-font);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--primary-color);
+  }
+  
+  /*Responsive stacking*/
+  @media (max-width: 600px) {
+    .dropdown-columns {
+      grid-template-columns: 1fr;
+    }
+  
+    .dropdown-columns::after {
+      display: none;
+    }
+  
+    .two-column-dropdown {
+      width: 100%;
+    }
+  }
+
+/****
+*TOC*
+****/
+nav#TOC a.nav-link:hover {
+  color: var(--primary-color) !important; /* Your desired hover color */
 }
 
- h1 a {
-    color: #dfe5e1; /*color for header links */
-    text-decoration: none; /* Underline for header links */
-    font-size: 24px;
-}  
+/* Change link color when active (clicked or matching current scroll position) */
+nav#TOC a.nav-link.active {
+  color: var(--primary-color) !important; /* Your active color */
+}
 
-header a {
-    color: #dfe5e1; /*color for header links */
-    text-decoration: none; /* Underline for header links */
-    font-size: 20px;
-} 
+/*****
+*MAIN*
+*****/
 
-h1 a {
-    color: #dfe5e1; /*color for header links */
-    text-decoration: none; /* Underline for header links */
-    font-size: 24px;
-} 
-footer {
-    background-color: #5D7E6A;
-    padding-bottom: 35px;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    color: #dfe5e1;
-    text-align: center;
-    /* By default, footer will stick to the bottom due to Flexbox layout. */
+body { 
+  background-color: var(--background-color); 
+  font-family: var(--primary-font);
 }
 
  a {
-    color: #5D7E6A; /* Sets the text color for links */
+    color: var(--primary-color); /* Sets the text color for links */
     font-weight: bold; /* Makes the link text bold */
 
     /* Additional styles */
@@ -77,7 +167,8 @@ footer {
     transition: all 0.3s ease;
 
     &:hover { 
-        color: #2e4d37; /* Changes the text color to a darker shade on hover */
+        color: var(--accent-color); /* Changes the text color to a darker shade on hover */
+        text-decoration: underline;
     }
 
     &:active, &:focus {
@@ -85,52 +176,166 @@ footer {
     }
 }
 
-/* Headers and Paragraphs */
-
-h1{ /*Page Titles & Section headers*/
-    font-size: 24px;
-    margin: 20px; /* Adds some spacing below each paragraph */
-    margin-bottom: 10px;
+/**********
+*FOOTNOTES*
+**********/
+div#quarto-appendix.default {
+  background-color: var(--background-color); /* Replace with your desired color */
 }
 
-h6{ /*Subtitles*/
-    font-size: 20px;
-    margin: 20px; /* Adds some spacing below each paragraph */
-    margin-top: 0px;
-    margin-bottom: 40px;
-    font-weight: normal;
+.footnotes {
+  background-color: var(--background-color); 
+  
 }
 
-h2, h3 { 
-    font-size: 20px;
-    margin: 20px; /* Adds some spacing below each paragraph */
-    margin-bottom: 10px;
-
+.footnotes h2::after {
+  content: "Sources";
 }
 
-h4, h5, p {
-    font-size: 20px;
-    margin: 20px; /* Adds some spacing below each paragraph */
-    margin-top: 0px;
+.footnotes h2 {
+  color: transparent;  /* hides the original text */
+  position: relative;
 }
 
-p {
-    line-height: 2.0; /* Adds some space between lines of text */
+.footnotes h2::after {
+  content: "Sources";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: black;        /* or your desired text color */
 }
 
-table {
-    border-collapse: collapse; /* Remove default spacing between cells */
-    margin: 0 20px; /* Add 20px of space on both sides */
-    border-bottom: 5px solid #ddd;
+/*********
+*CALLOUTS*
+*********/
+.callout.callout-note {
+  border-color: var(--accent-color) !important;
+  background-color: var(--white); /* light background */
 }
 
-th, td {
-    border: 1px solid #ddd; /* Add borders around each cell */
-    padding: 10px; /* Add space between text and cell edges */
-    text-align: left; /* Align text to the left in each cell */
-    
+/* Change the header (title) background and color */
+.callout.callout-note .callout-header {
+  background-color: var(--accent-color) !important; /* lighter purple */
+  color: var(--secondary-color); /* dark text */
 }
 
-th {
-    background-color: #f0f0f0; /* Lighten header cells */
+/**************
+*Standard card*
+**************/
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
+
+.right-card {
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: var(--white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+
+.right-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+/**********
+*Flip card*
+**********/
+
+.flip-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.flip-card {
+  perspective: 1000px;
+}
+
+
+/* Inner Flip Mechanism */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+/* Visual flip and raise card when javascript sets flip-card to flipped-card*/
+.flipped-card .flip-card-inner { /*Previously used .flipped-card:hover*/
+  transform: rotateY(180deg);
+  z-index: 10;
+  margin-bottom: 0px; /*sets default bottom margin, change with js*/
+}
+
+
+/* Front and Back Faces */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  background-color: var(--white);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  backface-visibility: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Back side styling */
+.flip-card-back {
+  transform: rotateY(180deg);
+  min-height: 300px;
+  height: auto;
+  
+}
+
+
+.flip-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.flip-card-front h3.anchored { 
+  pointer-events: none; /*Another attempt to solve mobile issue*/
+}
+
+/*********************
+*dataTable Formatting*
+*********************/
+ div.bottom {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  div.bottom-center {
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  div.bottom-right {
+    grid-row: 0;
+    justify-self: end;
+    margin-top: 0.25rem;
+    margin-right: 1rem;
+  }

@@ -5,15 +5,20 @@ project:
     - index.qmd
     - journal.qmd
     - archive.qmd
+    - dev-tableau-embed.qmd
     - md/Rights
     - md/Issues
     - md/Solutions
 format:
   html:
-    css: /assets/css/dev-default-styles.css
-    include-after-body: dev-navbar.html #Functional example navbar
+    theme: bootstrap
+    # theme: none
+    css: /assets/css/default-styles.css
+    # include-in-header: "_includes/custom-header-dev.html" #Pet project - creating header from scratch
+    include-after-body: "_includes/generated-navbar.html" #Functional example navbar
 website:
   title: "Uncommon Sense"
+  # favicon: /images/test-image.png
   announcement: 
     icon: cone-striped
     dismissable: true
@@ -32,13 +37,5 @@ website:
           - archive.qmd
           - journal.qmd
 search: false
-  # sidebar: 
-  #   - id: more
-  #     title: "More"
-  #     contents:
-  #       - text: "Archive"
-  #         href: archive.qmd
-  #       - text: "Feed"
-  #         href: feed.qmd
 # metadata-files: 
 #   - _navbar.yml
