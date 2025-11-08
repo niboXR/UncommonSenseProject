@@ -1,0 +1,75 @@
+---
+title: "American Trends Panel - Wave 127"
+subtitle: "An independent report on data gathered by the Pew Research Center"
+author: "Nick B"
+date: today
+format: 
+  html:
+    toc: true
+    code-tools: true          # Global code toggle
+    code-fold: true             # Allow folding
+    code-fold-default: false    # Hide code by default
+    code-summary: "Show Code"   # Optional button label
+  pdf:
+    echo: false
+    toc: true
+---
+
+      
+{{< pagebreak >}}
+
+
+This is going to be an independent report on the ATPW127. This report will be organized by topic.
+
+# Data
+
+```{r get-data-and-metadata}
+
+# Get data and metadata
+
+```
+
+# Methods
+
+```{r analysis}
+
+# Run analysis
+
+
+# Write results data to google drive
+```
+
+# Results
+
+::: {.content-visible when-format="html"}
+```{r html-findings}
+
+# For each survey item, print item details and render results
+
+```
+
+```{=html}
+
+<!-- Lightweight Tableau Embed -->
+<iframe
+  src="https://public.tableau.com/views/Testingembedding/Dashboard1?:embed=y&:showVizHome=no&:toolbar=no"
+  width="100%"
+  height="500"
+  style="border:none;"
+  loading="lazy"
+  allowfullscreen>
+</iframe>
+
+
+```
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r pdf-findings}
+
+# For each survey item, print item details and render results
+
+```
+:::
+
+# Takeaways

@@ -5,7 +5,7 @@ project:
     - index.qmd
     - journal.qmd
     - archive.qmd
-    - dev-tableau-embed.qmd
+    - data-report-ATPW127.qmd
     - md/Rights
     - md/Issues
     - md/Solutions
