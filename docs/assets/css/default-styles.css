@@ -149,6 +149,10 @@ nav#TOC a.nav-link.active {
   color: var(--primary-color) !important; /* Your active color */
 }
 
+h2.hidden-heading {
+  display: none;
+}
+
 /*****
 *MAIN*
 *****/

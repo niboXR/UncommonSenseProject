@@ -19,24 +19,36 @@ format:
 {{< pagebreak >}}
 
 
-This is going to be an independent report on the ATPW127. This report will be organized by topic.
 
 # Data
 
 ```{r get-data-and-metadata}
+#| message: false
+library(haven) #needed to read_sav
+library(readxl)
 
-# Get data and metadata
+
+ATPW127 <- read_sav("../data/ATPW127/ATPW127.sav") #get data
+
+
+metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", col_names = TRUE) #brings in codebook
 
 ```
+
 
 # Methods
 
 ```{r analysis}
 
+# Remove insignificant item non-response
+
+
 # Run analysis
 
 
-# Write results data to google drive
+
+# Copy results data to google drive for tableau integration 
+
 ```
 
 # Results
@@ -48,11 +60,15 @@ This is going to be an independent report on the ATPW127. This report will be or
 
 ```
 
+# Example Bivariate 
+
+## Physical Health {.hidden-heading}
+
 ```{=html}
 
 <!-- Lightweight Tableau Embed -->
 <iframe
-  src="https://public.tableau.com/views/Testingembedding/Dashboard1?:embed=y&:showVizHome=no&:toolbar=no"
+  src="https://public.tableau.com/views/Testingembedding/BivariateDash?:embed=y&:showVizHome=no&:toolbar=no&Variable=Physical%20Health&VariableLabel%20Parameter=Physical%20Health"
   width="100%"
   height="500"
   style="border:none;"
@@ -62,6 +78,42 @@ This is going to be an independent report on the ATPW127. This report will be or
 
 
 ```
+
+# Example Series
+
+```{=html}
+
+<!-- Lightweight Tableau Embed -->
+<iframe
+  src="https://public.tableau.com/views/Testingembedding/SeriesDash?:embed=y&:showVizHome=no&:toolbar=no"
+  width="100%"
+  height="675"
+  style="border:none;"
+  loading="lazy"
+  allowfullscreen>
+</iframe>
+
+
+```
+
+# Example Select all that apply
+
+```{=html}
+
+<!-- Lightweight Tableau Embed -->
+<iframe
+  src="https://public.tableau.com/views/Testingembedding/MultipleQDash?:embed=y&:showVizHome=no&:toolbar=no"
+  width="100%"
+  height="305"
+  style="border:none;"
+  loading="lazy"
+  allowfullscreen>
+</iframe>
+
+
+```
+
+
 :::
 
 ::: {.content-visible when-format="pdf"}
