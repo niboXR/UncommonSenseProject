@@ -15,12 +15,19 @@ format:
     toc: true
 ---
 
-      
 {{< pagebreak >}}
 
 
 
+
+
+
+
+
 # Data
+
+
+
 
 ```{r get-data-and-metadata}
 #| message: false
@@ -36,7 +43,13 @@ metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, 
 ```
 
 
+
+
+
 # Methods
+
+
+
 
 ```{r analysis}
 library(dplyr)
@@ -68,15 +81,15 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 # Run analysis
   
-  # # Define the function
-  # bivariate_results_func <-  function(svy_data, var, bivar) {
-  #   svy_data %>%
-  #   group_by(across(all_of(c(bivar, var)))) %>%
-  #   summarize(
-  #     proportion = survey_prop(vartype = c("ci"))
-  #   ) %>%
-  #   mutate(var = var, bivar = bivar)
-  # }
+  # Define the function
+  bivariate_results_func <-  function(svy_data, var, bivar) {
+    svy_data %>%
+    group_by(across(all_of(c(bivar, var)))) %>%
+    summarize(
+      proportion = survey_prop(vartype = c("ci"))
+    ) %>%
+    mutate(var = var, bivar = bivar)
+  }
   
   # Run the function for each combo
   combos <- expand_grid(var = vars, bivar = bivars) #gets the combos
@@ -88,36 +101,45 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
         svy_data %>%
           group_by(across(all_of(c(bivar, var)))) %>%
           summarise(proportion = survey_prop(vartype = "ci")) %>%
-          mutate(Var = var, Bivar = bivar) %>%
-          relocate(Var, .before = var) %>%
-          relocate (Bivar, .before = bivar) %>%
-          relocate (c(Var, var), .before = Bivar) %>%
-          rename(VarValue = var) %>%
-          rename(BivarValue = bivar) 
-      ),
-      test = var
-    )
-    # %>%
-    # ungroup() %>%
-    # unnest(data)
+          rename(
+            BivarValue = !!bivar,
+            VarValue   = !!var
+          ) %>% 
+          mutate(Var = var, Bivar = bivar)
+      )
+    ) %>%
+    ungroup() %>%
+    unnest(data)
   
 
 # Copy results data to google drive for tableau integration 
 
 ```
 
+
+
+
 # Results
 
 ::: {.content-visible when-format="html"}
+
+
+
 ```{r html-findings}
 
 # For each survey item, print item details and render results
 
 ```
 
+
+
+
 # Example Bivariate 
 
 ## Physical Health {.hidden-heading}
+
+
+
 
 ```{=html}
 
@@ -134,7 +156,13 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 ```
 
+
+
+
 # Example Series
+
+
+
 
 ```{=html}
 
@@ -151,7 +179,13 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 ```
 
+
+
+
 # Example Select all that apply
+
+
+
 
 ```{=html}
 
@@ -169,14 +203,24 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 ```
 
 
+
+
+
 :::
 
 ::: {.content-visible when-format="pdf"}
+
+
+
 ```{r pdf-findings}
 
 # For each survey item, print item details and render results
 
 ```
+
+
+
 :::
 
 # Takeaways
+
