@@ -38,11 +38,16 @@ metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, 
 
 # Methods
 
+
 ```{r analysis}
+#| include: false
+#| eval: false
 library(dplyr)
 library(tidyverse)
 library(srvyr)
 library(purrr)
+library(haven) #for label zapping
+library(labelled) #for labelling overall column
 
 # Remove insignificant item non-response
 
@@ -51,9 +56,18 @@ vars <- metadata %>%
   filter(Item != "N/A") %>%
   distinct(Variable) %>%
   pull(Variable)
+
+  
+    var_labels <- map_dfr(vars, function(var) { # Get bivariate labels
+    var_labels <- attr(data[[var]], "labels")
+    var_labels <- data.frame(
+        Variable = var,
+        VarValue = as.numeric(var_labels),
+        VarLabel = names(var_labels)
+      )
+    })
  
 
-vars <- vars[1:5]
 
 bivars <- metadata %>%
   filter(Type == "SUP") %>%
@@ -61,48 +75,79 @@ bivars <- metadata %>%
   pull(Variable)
 
 bivars<- bivars[1:3]
+
+  data$OVERALL <- 1 #create overall column
+  var_label(data$OVERALL) <- "Overall" #label overall column
+  data$OVERALL <- labelled(data$OVERALL,
+                           labels = c(
+                             "Overall" = 1
+                           ))
   
+  bivars <- c("OVERALL", bivars)
+
+    bivar_labels <- map_dfr(bivars, function(bivar) { # Get bivariate labels
+    bivar_labels <- attr(data[[bivar]], "labels")
+    bivar_labels <- data.frame(
+        Bivariate = bivar,
+        BivarValue = as.numeric(bivar_labels),
+        BivarLabel = names(bivar_labels)
+      )
+    })
+
+
 # Setup analysis
 
 svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup survey analysis
 
 # Run analysis
-  
-  # # Define the function
-  # bivariate_results_func <-  function(svy_data, var, bivar) {
-  #   svy_data %>%
-  #   group_by(across(all_of(c(bivar, var)))) %>%
-  #   summarize(
-  #     proportion = survey_prop(vartype = c("ci"))
-  #   ) %>%
-  #   mutate(var = var, bivar = bivar)
-  # }
-  
-  # Run the function for each combo
-  combos <- expand_grid(var = vars, bivar = bivars) #gets the combos
-  
-  results <- combos %>%
-    rowwise() %>% 
-    mutate(
-      data = list(
-        svy_data %>%
-          group_by(across(all_of(c(bivar, var)))) %>%
-          summarise(proportion = survey_prop(vartype = "ci")) %>%
-          mutate(Var = var, Bivar = bivar) %>%
-          relocate(Var, .before = var) %>%
-          relocate (Bivar, .before = bivar) %>%
-          relocate (c(Var, var), .before = Bivar) %>%
-          rename(VarValue = var) %>%
-          rename(BivarValue = bivar) 
-      ),
-      test = var
-    )
-    # %>%
-    # ungroup() %>%
-    # unnest(data)
+combos <- expand_grid(var = vars, bivar = bivars) #gets the combos
+
+results <- combos %>%
+  rowwise() %>% 
+  mutate(
+    results = list(
+      svy_data %>%
+        filter(across(all_of(c(var, bivar)), ~ !is.na(.))) %>% #remove missing values
+        group_by(across(all_of(c(bivar, var)))) %>% #set level of aggregation
+        summarise(proportion = survey_prop(vartype = "ci")) %>% #survey analysis
+        mutate(Variable = var, 
+               Bivariate = bivar,
+               VariableLabel = metadata$Label[metadata$Variable == var][1],
+               BivariateLabel = if (bivar == "OVERALL") {"Overall"} else metadata$Label[metadata$Variable == bivar][1],               
+               Percent = round(proportion*100, 2),
+               LB = round(proportion_low*100, 2),
+               UB = round(proportion_upp*100, 2)
+              ) %>%
+        select(-proportion, -proportion_low, -proportion_upp) %>%
+        rename(VarValue = var) %>% mutate(VarValue = zap_labels(VarValue)) %>%
+        left_join(var_labels, by = c("Variable", "VarValue")) %>%   
+        rename(BivarValue = bivar) %>% mutate(BivarValue = zap_labels(BivarValue)) %>%
+        left_join(bivar_labels, by = c("Bivariate", "BivarValue")) %>%
+        select(VariableLabel, Variable, VarValue, VarLabel, BivariateLabel, Bivariate, BivarValue, BivarLabel, Percent, LB, UB) 
+    ),
+  ) %>%
+  ungroup() %>%
+  unnest(results) %>% select(-var, -bivar)
   
 
-# Copy results data to google drive for tableau integration 
+# Copy results data to google drive for tableau integration
+library(googlesheets4)
+gs4_auth()
+
+sheet_url <- "https://docs.google.com/spreadsheets/d/1Utf7u_t9YmoPh40ca81geJu3-c66t5Rx9EUsWi77CY4/edit?usp=drive_link"
+
+sheet_write(
+  data = results,
+  ss = sheet_url,
+  sheet = "Results data"
+)
+
+
+# copy results to local file (extract safe but requires tableau republish)
+library(writexl)
+
+write_xlsx(results, "../data/results.xlsx")
+
 
 ```
 
@@ -110,10 +155,65 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 ::: {.content-visible when-format="html"}
 ```{r html-findings}
+#| results: asis
 
+items <- unique(metadata$Item[metadata$Item != "N/A"])
 # For each survey item, print item details and render results
 
+for (i in items) {
+  
+  type_i <- metadata$Type[metadata$Item == i][1]
+  
+  if (type_i == "Single-choice") {
+    
+    # Write dynamic content using paste0
+    dash <- "BivariateDash"
+    variables <- metadata$Variable[metadata$Item == i][1]
+    variables <- paste(variables, collapse = ",")
+    label <- URLencode(metadata$Variable_Label[metadata$Item == i][1], reserved = FALSE)
+    label <- gsub(",", "|", label)
+    universe <- metadata$Base[metadata$Item == i][1]
+    
+    
+    height <- 500
+  }
+  
+  if (type_i == "Series") {
+    
+    # Write dynamic content using paste0
+    dash <- "SeriesDash"
+    variables <- unique(metadata$Variable[metadata$Item == i]) 
+    variables <- paste(variables, collapse = ",")
+    label <- URLencode(metadata$Question[metadata$Item == i][1], reserved = FALSE)
+    label <- gsub(",", "|", label)
+    universe <- metadata$Base[metadata$Item == i][1]
+    
+    height <- 500
+  }
+  
+  src <- paste0("https://tableau.dsc.umich.edu/t/UM-Public/views/Testingembedding/",
+    dash, "?:embed=y&:showVizHome=no&:toolbar=no",
+    "&Variable=", variables,
+    "&LabelParameter=", label,
+    "&UniverseParameter=", universe)
+
+    cat('
+  <iframe
+  src="',src,'"
+    width="100%"
+    height="500"
+    style="border:none;"
+    loading="lazy"
+    allowfullscreen>
+  </iframe>
+  
+    ')
+  
+}
+
 ```
+
+
 
 # Example Bivariate 
 
@@ -123,7 +223,7 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 <!-- Lightweight Tableau Embed -->
 <iframe
-  src="https://public.tableau.com/views/Testingembedding/BivariateDash?:embed=y&:showVizHome=no&:toolbar=no&Variable=Physical%20Health&VariableLabel%20Parameter=Physical%20Health"
+  src="https://public.tableau.com/views/Testingembedding/BivariateDash?:embed=y&:showVizHome=no&:toolbar=no&Variable=DIGCONF_W127"
   width="100%"
   height="500"
   style="border:none;"
@@ -150,24 +250,6 @@ svy_data <- data %>% as_survey_design(ids = QKEY, weight = WEIGHT_W127) #setup s
 
 
 ```
-
-# Example Select all that apply
-
-```{=html}
-
-<!-- Lightweight Tableau Embed -->
-<iframe
-  src="https://public.tableau.com/views/Testingembedding/MultipleQDash?:embed=y&:showVizHome=no&:toolbar=no"
-  width="100%"
-  height="305"
-  style="border:none;"
-  loading="lazy"
-  allowfullscreen>
-</iframe>
-
-
-```
-
 
 :::
 
