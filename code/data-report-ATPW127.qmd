@@ -31,6 +31,8 @@ format:
 
 ```{r get-data-and-metadata}
 #| message: false
+#| include: false
+#| echo: false
 library(haven) #needed to read_sav
 library(readxl)
 
@@ -45,13 +47,13 @@ metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, 
 ```{r analysis}
 #| include: false
 #| eval: false
+#| echo: false
 library(dplyr)
 library(tidyverse)
 library(srvyr)
 library(purrr)
 library(haven) #for label zapping
 library(labelled) #for labelling overall column
-
 
 # Set analysis decisions
 vars <- metadata %>% 
@@ -158,9 +160,12 @@ write_xlsx(results, "../data/results.xlsx")
 :::: {.content-visible when-format="html"}
 ```{r html-findings}
 #| results: asis
+#| echo: false
 
 items <- unique(metadata$Item[metadata$Item != "N/A"])
 # For each survey item, print item details and render results
+
+cat('<hr style="border: 2px solid #234D37;">')
 
 for (i in items) {
   
@@ -210,7 +215,8 @@ for (i in items) {
   </iframe>
   
     ')
-  
+ 
+cat('<hr style="border: 2px solid #234D37;">') 
 }
 
 ```
@@ -223,5 +229,5 @@ for (i in items) {
 ```
 :::
 
-# Takeaways
+
 ::::
