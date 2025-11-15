@@ -15,12 +15,19 @@ format:
     toc: true
 ---
 
-      
+```{r notes}
+#| eval: false
+#| include: false
+
+#This is my place for notes. It doesn't get displayed in the output docs. Just the code
+
+# I want to add viewable source files to my sidepane.
+
+# Add sections for TOC
+
+```
+
 {{< pagebreak >}}
-
-
-
-# Data
 
 ```{r get-data-and-metadata}
 #| message: false
@@ -35,10 +42,6 @@ metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, 
 
 ```
 
-
-# Methods
-
-
 ```{r analysis}
 #| include: false
 #| eval: false
@@ -49,7 +52,6 @@ library(purrr)
 library(haven) #for label zapping
 library(labelled) #for labelling overall column
 
-# Remove insignificant item non-response
 
 # Set analysis decisions
 vars <- metadata %>% 
@@ -71,10 +73,24 @@ vars <- metadata %>%
 
 bivars <- metadata %>%
   filter(Type == "SUP") %>%
+  filter(!Variable %in% c(
+                      "F_CDIVISION", #Too granular - specific analysis variable
+                      "F_HISP", # Accounted for in another variable 
+                      "F_HISP_ORIGIN", #Too granular - specific analysis variable
+                      "F_RACECMB", # Prefer F_RACETHNMOD
+                      "F_BIRTHPLACE", #Use if interesting findings by F_CITIZEN
+                      "F_MARITAL", # Specific analysis variable
+                      "F_RELIG",  # Too granular
+                      "F_ATTEND",  # Too granular
+                      "F_PARTYSUMIDEO_FINAL", # prefer F_PARTY_SUM_FINAL & F_IDEO
+                      "F_INC_SDT1" # Too granular
+                      )) %>%
   distinct(Variable) %>%
   pull(Variable)
 
-bivars<- bivars[1:3]
+
+
+
 
   data$OVERALL <- 1 #create overall column
   var_label(data$OVERALL) <- "Overall" #label overall column
@@ -130,20 +146,8 @@ results <- combos %>%
   unnest(results) %>% select(-var, -bivar)
   
 
-# Copy results data to google drive for tableau integration
-library(googlesheets4)
-gs4_auth()
 
-sheet_url <- "https://docs.google.com/spreadsheets/d/1Utf7u_t9YmoPh40ca81geJu3-c66t5Rx9EUsWi77CY4/edit?usp=drive_link"
-
-sheet_write(
-  data = results,
-  ss = sheet_url,
-  sheet = "Results data"
-)
-
-
-# copy results to local file (extract safe but requires tableau republish)
+#copy results to local file for preservation
 library(writexl)
 
 write_xlsx(results, "../data/results.xlsx")
@@ -151,9 +155,7 @@ write_xlsx(results, "../data/results.xlsx")
 
 ```
 
-# Results
-
-::: {.content-visible when-format="html"}
+:::: {.content-visible when-format="html"}
 ```{r html-findings}
 #| results: asis
 
@@ -213,46 +215,6 @@ for (i in items) {
 
 ```
 
-
-
-# Example Bivariate 
-
-## Physical Health {.hidden-heading}
-
-```{=html}
-
-<!-- Lightweight Tableau Embed -->
-<iframe
-  src="https://public.tableau.com/views/Testingembedding/BivariateDash?:embed=y&:showVizHome=no&:toolbar=no&Variable=DIGCONF_W127"
-  width="100%"
-  height="500"
-  style="border:none;"
-  loading="lazy"
-  allowfullscreen>
-</iframe>
-
-
-```
-
-# Example Series
-
-```{=html}
-
-<!-- Lightweight Tableau Embed -->
-<iframe
-  src="https://public.tableau.com/views/Testingembedding/SeriesDash?:embed=y&:showVizHome=no&:toolbar=no"
-  width="100%"
-  height="675"
-  style="border:none;"
-  loading="lazy"
-  allowfullscreen>
-</iframe>
-
-
-```
-
-:::
-
 ::: {.content-visible when-format="pdf"}
 ```{r pdf-findings}
 
@@ -262,3 +224,4 @@ for (i in items) {
 :::
 
 # Takeaways
+::::
