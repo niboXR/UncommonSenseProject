@@ -26,6 +26,8 @@ format:
 
 # Add sections for TOC
 
+# I might have messed up my metadata. Ensure I still have all the values and then organize properly.
+
 ```
 
 
@@ -43,21 +45,18 @@ data <- read_sav("../data/ATPW127/ATPW127.sav") #get data
 
 metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, col_names = TRUE) #brings in codebook
 
+
 results <- read_xlsx("../data/results.xlsx")
 
 ```
 
-This interactive data report let's you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the [internet, social media, and digital privacy](#the-internet-social-media-and-digital-privacy) and [Black Lives Matter protests, the police, and patriotism](#black-lives-matter-protests-the-police-and-patriotism).
+This interactive data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism.
 
 
 
 {{< pagebreak >}}
 
 
-# The internet, social media, and digital privacy
-
-
-# Black Lives Matter, protests, the police, and patriotism
 
 ```{r analysis}
 #| include: false
@@ -180,13 +179,21 @@ write_xlsx(results, "../data/results.xlsx")
 
 items <- unique(metadata$Item[metadata$Item != "N/A"])
 
-# items <- "DB1_W127" #testing an issue
+sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
+prev_section_i <- "" #Creates object needed for loop logic
 
-cat('<hr style="border: 2px solid #234D37;">')
+
 
 for (i in items) { # For each survey item, print item details and render results
   
   type_i <- metadata$Type[metadata$Item == i][1]
+  section_i <- unique(metadata$Section[metadata$Item == i])
+  
+  if (prev_section_i != section_i) {
+    if (prev_section_i != ""){cat('<hr style="border: 2px solid #234D37;">\n')}
+    cat('## ',section_i,'\n')} # prints new sections
+  
+  prev_section_i <- section_i
   
   if (type_i %in% c("Single-choice", "Single-choice w/ correct")) {
   
@@ -214,7 +221,9 @@ for (i in items) { # For each survey item, print item details and render results
     
     height <- 500
   }
-  
+
+cat('<hr style="border: 2px solid #234D37;">\n')
+    
   src <- paste0("https://tableau.dsc.umich.edu/t/UM-Public/views/Testingembedding/",
     dash, "?:embed=y&:showVizHome=no&:toolbar=no",
     "&Variable=", variables,
@@ -232,8 +241,11 @@ for (i in items) { # For each survey item, print item details and render results
   </iframe>
   
     ')
+
+
  
-cat('<hr style="border: 2px solid #234D37;">') 
+cat('\n')
+
 }
 
 ```
