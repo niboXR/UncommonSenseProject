@@ -13,7 +13,12 @@
 
 
 
+/*Data report - Section titles*/
 
+h1.hidden-header {
+  display: none !important;
+
+}
 
 /*******
 *NAVBAR*
@@ -212,6 +217,8 @@ div#quarto-appendix.default {
 /*********
 *CALLOUTS*
 *********/
+
+/*Note*/
 .callout.callout-note {
   border-color: var(--accent-color) !important;
   background-color: var(--white); /* light background */
@@ -222,6 +229,45 @@ div#quarto-appendix.default {
   background-color: var(--accent-color) !important; /* lighter purple */
   color: var(--secondary-color); /* dark text */
 }
+
+
+#section-callout {
+
+  border: none !important;
+  box-shadow: none !important;
+ /* background-color: var(--background-color); /* light background */
+
+  
+}
+
+#section-callout p {
+
+ margin: 0 !important;
+ padding: 0 !important;
+  
+}
+
+#section-callout iframe {
+ display: block;
+ margin: 0 !important;
+ padding: 0 !important;
+  
+}
+
+#section-callout .callout-body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.callout-body-container, .callout-body p{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+
+
+
+
 
 /**************
 *Standard card*

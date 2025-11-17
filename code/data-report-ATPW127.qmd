@@ -30,8 +30,6 @@ format:
 
 ```
 
-
-
 ```{r get-data-and-metadata}
 #| message: false
 #| include: false
@@ -52,11 +50,7 @@ results <- read_xlsx("../data/results.xlsx")
 
 This interactive data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism.
 
-
-
 {{< pagebreak >}}
-
-
 
 ```{r analysis}
 #| include: false
@@ -176,61 +170,56 @@ write_xlsx(results, "../data/results.xlsx")
 #| results: asis
 #| echo: false
 
-
-items <- unique(metadata$Item[metadata$Item != "N/A"])
-
 sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
-prev_section_i <- "" #Creates object needed for loop logic
 
 
+for (sec in sections) {
+  cat('# ',sec,' {.hidden-header}\n')
+  cat('::: {#section-callout .callout-note collapse="true" icon="false"}\n') #starts callout note
+  cat('## ',sec,'\n')
+    
+  prev_section <- "" #Creates object needed for loop logic
 
-for (i in items) { # For each survey item, print item details and render results
-  
-  type_i <- metadata$Type[metadata$Item == i][1]
-  section_i <- unique(metadata$Section[metadata$Item == i])
-  
-  if (prev_section_i != section_i) {
-    if (prev_section_i != ""){cat('<hr style="border: 2px solid #234D37;">\n')}
-    cat('## ',section_i,'\n')} # prints new sections
-  
-  prev_section_i <- section_i
-  
-  if (type_i %in% c("Single-choice", "Single-choice w/ correct")) {
-  
-    # Write dynamic content using paste0
-    dash <- "BivariateDash"
-    variables <- metadata$Variable[metadata$Item == i][1]
-    variables <- paste(variables, collapse = ",")
-    label <- URLencode(metadata$Variable_Label[metadata$Item == i][1], reserved = FALSE)
-    label <- gsub(",", "|", label)
-    universe <- metadata$Base[metadata$Item == i][1]
-    
-    
-    height <- 500
-  }
-  
-  if (type_i == "Series") {
-    
-    # Write dynamic content using paste0
-    dash <- "SeriesDash"
-    variables <- unique(metadata$Variable[metadata$Item == i]) 
-    variables <- paste(variables, collapse = ",")
-    label <- URLencode(metadata$Question[metadata$Item == i][1], reserved = FALSE)
-    label <- gsub(",", "|", label)
-    universe <- metadata$Base[metadata$Item == i][1]
-    
-    height <- 500
-  }
+  items <- unique(metadata$Item[metadata$Section == sec & metadata$Item != "N/A"])
 
-cat('<hr style="border: 2px solid #234D37;">\n')
+  for (i in items) { # For each survey item, print item details and render results
     
-  src <- paste0("https://tableau.dsc.umich.edu/t/UM-Public/views/Testingembedding/",
-    dash, "?:embed=y&:showVizHome=no&:toolbar=no",
-    "&Variable=", variables,
-    "&LabelParameter=", label,
-    "&UniverseParameter=", universe)
+    type_i <- metadata$Type[metadata$Item == i][1]
 
-    cat('
+    if (type_i %in% c("Single-choice", "Single-choice w/ correct")) {
+
+      # Write dynamic content using paste0
+      dash <- "BivariateDash"
+      variables <- metadata$Variable[metadata$Item == i][1]
+      variables <- paste(variables, collapse = ",")
+      label <- URLencode(metadata$Variable_Label[metadata$Item == i][1], reserved = FALSE)
+      label <- gsub(",", "|", label)
+      universe <- metadata$Base[metadata$Item == i][1]
+
+
+      height <- 500
+    }
+
+    if (type_i == "Series") {
+
+      # Write dynamic content using paste0
+      dash <- "SeriesDash"
+      variables <- unique(metadata$Variable[metadata$Item == i])
+      variables <- paste(variables, collapse = ",")
+      label <- URLencode(metadata$Question[metadata$Item == i][1], reserved = FALSE)
+      label <- gsub(",", "|", label)
+      universe <- metadata$Base[metadata$Item == i][1]
+
+      height <- 500
+    }
+    
+    src <- paste0("https://tableau.dsc.umich.edu/t/UM-Public/views/Testingembedding/",
+      dash, "?:embed=y&:showVizHome=no&:toolbar=no",
+      "&Variable=", variables,
+      "&LabelParameter=", label,
+      "&UniverseParameter=", universe)
+
+  cat('
   <iframe
   src="',src,'"
     width="100%"
@@ -239,14 +228,23 @@ cat('<hr style="border: 2px solid #234D37;">\n')
     loading="lazy"
     allowfullscreen>
   </iframe>
+
+  ')
   
-    ')
+  # 
+  #   # if (section_i != prev_section_i) { cat('::: \n')} #FIGURE OUT LOGIC FOR CLOSING CALLOUT
+  # cat('\n')
+  # cat('\n')
+  # cat('<hr style="border: 2px solid #234D37;">')
 
+  } #closes item loop
+  
+  
+  # cat('<hr style="border: 2px solid #234D37;">\n')
+  
+  cat('\n::: \n\n')
 
- 
-cat('\n')
-
-}
+} #closes section loop
 
 ```
 
@@ -257,4 +255,3 @@ cat('\n')
 
 ```
 :::
-
