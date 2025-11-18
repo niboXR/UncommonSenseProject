@@ -175,7 +175,7 @@ sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplem
 
 for (sec in sections) {
   cat('# ',sec,' {.hidden-header}\n')
-  cat('::: {#section-callout .callout-note collapse="true" icon="false"}\n') #starts callout note
+  cat('::: {.callout-important collapse="true" icon="false"}\n') #starts callout note
   cat('## ',sec,'\n')
     
   prev_section <- "" #Creates object needed for loop logic
@@ -224,11 +224,10 @@ for (sec in sections) {
   src="',src,'"
     width="100%"
     height="500"
-    style="border:none;"
+    style="background:red; border:none;"
     loading="lazy"
     allowfullscreen>
   </iframe>
-
   ')
   
   # 
