@@ -6,11 +6,12 @@ date: today
 format: 
   html:
     toc: true
+    toc-depth: 1
     toc-title: "Topics"
-    code-tools: true          # Global code toggle
-    code-fold: true             # Allow folding
-    code-fold-default: false    # Hide code by default
-    code-summary: "Show Code"   # Optional button label
+    # # code-tools: true          # Global code toggle - turned off due to issue w/ collapse sections
+    # code-fold: true             # Allow folding
+    # code-fold-default: false    # Hide code by default
+    # code-summary: "Show Code"   # Optional button label
   pdf:
     echo: false
     toc: true
@@ -162,13 +163,92 @@ library(writexl)
 
 write_xlsx(results, "../data/results.xlsx")
 
+# export results as formatted xlsx
+
+
+```
+
+```{r print-findings}
+#| results: asis
+#| echo: false
+
+suppressMessages(library(dplyr))
+library(knitr)
+
+sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
+
+
+for (sec in sections) {
+  
+  cat('# ',sec,' {.section-collapse}\n')
+  # cat('::: {.callout-important collapse="true" icon="false"}\n') #starts callout note
+  # cat('## ',sec,'\n')
+    
+  prev_section <- "" #Creates object needed for loop logic
+
+  items <- unique(metadata$Item[metadata$Section == sec & metadata$Item != "N/A"])
+
+  for (i in items) { # For each survey item, print item details and render results
+    
+    type_i <- metadata$Type[metadata$Item == i][1]
+
+    if (type_i %in% c("Single-choice", "Single-choice w/ correct")) {
+
+      output <- "VerticalBars"
+      variables <- metadata$Variable[metadata$Item == i][1]
+      variables <- paste(variables, collapse = ",")
+      label <- metadata$Variable_Label[metadata$Item == i][1]
+      universe <- metadata$Base[metadata$Item == i][1]
+      
+    cat('## ',label,' {.item-card}\n')
+    cat('##### ',universe,'\n')
+    
+    
+    i_results <- results %>%
+      filter(Variable == i & Bivariate == "OVERALL") %>%
+      select(VarLabel, Percent, LB, UB)
+
+    
+    i_results <- kable(i_results)
+    
+    
+    }
+
+    if (type_i == "Series") {
+
+      output <- "StackedBar"
+      variables <- unique(metadata$Variable[metadata$Item == i])
+      label <- metadata$Question[metadata$Item == i][1]
+      universe <- metadata$Base[metadata$Item == i][1]
+      
+    cat('## ',label,' {.item-card}\n')
+    cat('##### ',universe,'\n')
+    
+    
+    i_results <- results %>%
+      filter(Variable %in% variables, Bivariate == "OVERALL") %>%
+      select(VariableLabel, VarLabel, Percent, LB, UB)
+    
+    i_results <- kable(i_results)
+
+    }
+  
+  print(i_results)
+  
+  } #closes item loop
+  
+  # cat('\n::: \n\n')
+
+} #closes section loop
 
 ```
 
 :::: {.content-visible when-format="html"}
-```{r html-findings}
+```{r archived-tableau-findings}
 #| results: asis
 #| echo: false
+#| include: false
+#| eval: false
 
 sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
 
@@ -224,22 +304,12 @@ for (sec in sections) {
   src="',src,'"
     width="100%"
     height="500"
-    style="background:red; border:none;"
     loading="lazy"
     allowfullscreen>
   </iframe>
   ')
-  
-  # 
-  #   # if (section_i != prev_section_i) { cat('::: \n')} #FIGURE OUT LOGIC FOR CLOSING CALLOUT
-  # cat('\n')
-  # cat('\n')
-  # cat('<hr style="border: 2px solid #234D37;">')
 
   } #closes item loop
-  
-  
-  # cat('<hr style="border: 2px solid #234D37;">\n')
   
   cat('\n::: \n\n')
 
@@ -254,3 +324,40 @@ for (sec in sections) {
 
 ```
 :::
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Only collapse headers explicitly tagged with class "section-collapse"
+  const headers = document.querySelectorAll("h1.section-collapse");
+
+  headers.forEach(header => {
+
+    const content = [];
+    let el = header.nextElementSibling;
+
+    // Gather everything until the next <h1 class="section-collapse">
+    while (
+      el &&
+      !(el.tagName === "H1" && el.classList.contains("section-collapse"))
+    ) {
+      content.push(el);
+      el = el.nextElementSibling;
+    }
+
+    // Collapse all content initially
+    content.forEach(x => x.classList.add("collapsed-section"));
+
+    // Toggle visibility on click
+    header.addEventListener("click", () => {
+      const isOpen = header.classList.toggle("open");
+      content.forEach(x => {
+        x.style.display = isOpen ? "block" : "none";
+      });
+    });
+  });
+});
+</script>
+```
+::::

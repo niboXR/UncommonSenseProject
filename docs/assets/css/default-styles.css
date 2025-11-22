@@ -15,10 +15,75 @@
 
 /*Data report - Section titles*/
 
-h1.hidden-header {
-  display: none !important;
+ .collapsed-section {
+    display: none;
+  }
+  
+  
+  .section-collapse { 
+    border: 2px solid var(--accent-color);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+
+
+  }
+
+  h1.section-collapse {
+    display: flex;
+    justify-content: space-between;
+    
+    cursor: pointer;
+    position: relative;
+    background: var(--primary-color);
+    color: var(--background-color);
+    padding: 0.6em 1em;
+    border-radius: 8px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    
+  }
+ 
+   h1.section-collapse:hover {
+     
+     background: var(--accent-color);
+    
+   } 
+
+  h1.section-collapse::after {
+    content: "+";
+    border: 1px solid var(--background-color);   /* neutral border */
+    border-radius: 50%;
+
+    font-size: 1.2em;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+  }
+
+  h1.section-collapse.open::after {
+    content: "–";
+    border: 1px solid var(--background-color);     /* neutral border */
+    border-radius: 50%;
+  }
+  
+
+.level1.section-collapse {
+  
+    margin-top: 35px;
 
 }
+
+.level2.item-card.collapsed-section {
+  
+  border-bottom: 1px dashed var(--accent-color);
+  padding: 35px;
+
+}
+  
 
 /*******
 *NAVBAR*
