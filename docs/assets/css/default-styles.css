@@ -77,6 +77,12 @@
 
 }
 
+h2.item-card.anchored {
+  
+    font-size: 1.2em;
+
+}
+
 .level2.item-card.collapsed-section {
   
   border-bottom: 1px dashed var(--accent-color);

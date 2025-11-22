@@ -8,7 +8,7 @@ format:
     toc: true
     toc-depth: 1
     toc-title: "Topics"
-    # # code-tools: true          # Global code toggle - turned off due to issue w/ collapse sections
+    # code-tools: true          # Global code toggle
     # code-fold: true             # Allow folding
     # code-fold-default: false    # Hide code by default
     # code-summary: "Show Code"   # Optional button label
@@ -56,7 +56,7 @@ This data report lets you independently explore the findings from Wave 127 of th
 ```{r analysis}
 #| include: false
 #| eval: false
-#| echo: false
+#| echo: true
 library(dplyr)
 library(tidyverse)
 library(srvyr)
@@ -212,7 +212,8 @@ for (sec in sections) {
     
     i_results <- kable(i_results,
                        col.names = c(" ", names(i_results)[-1])
-                       )
+                       ) %>%
+                kable_styling(position = "left")
     
     
     }
@@ -237,13 +238,15 @@ for (sec in sections) {
         rle() %>%                       # find run lengths (successive identical values)
         { setNames(.$lengths, .$values) }   # named vector: group name → # of rows
           
+    i_results <- i_results %>% select(-1)
+    
+
     i_results <- kable(i_results, 
-                       col.names = c(names(i_results)[1], "", names(i_results)[-c(1, 2)])
+                       col.names = c("", names(i_results)[-1])
                        ) %>%
                 kable_styling(
                   position = "left") %>%
-                pack_rows(index = pack_index) %>%
-      { suppressWarnings(remove_column(., columns = 1)) }
+                pack_rows(index = pack_index)
     }
   
   print(i_results)
