@@ -80,7 +80,10 @@
 .level2.item-card.collapsed-section {
   
   border-bottom: 1px dashed var(--accent-color);
-  padding: 35px;
+  padding-top: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 30px;
 
 }
   

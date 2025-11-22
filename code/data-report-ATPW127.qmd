@@ -49,7 +49,7 @@ results <- read_xlsx("../data/results.xlsx")
 
 ```
 
-This interactive data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism.
+This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population. 
 
 {{< pagebreak >}}
 
@@ -174,6 +174,7 @@ write_xlsx(results, "../data/results.xlsx")
 
 suppressMessages(library(dplyr))
 library(knitr)
+suppressWarnings(suppressMessages(library(kableExtra)))
 
 sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
 
@@ -201,15 +202,17 @@ for (sec in sections) {
       universe <- metadata$Base[metadata$Item == i][1]
       
     cat('## ',label,' {.item-card}\n')
-    cat('##### ',universe,'\n')
+    cat('##### asked of ',universe,'\n')
     
     
     i_results <- results %>%
       filter(Variable == i & Bivariate == "OVERALL") %>%
-      select(VarLabel, Percent, LB, UB)
+      select(VarLabel, Percent)
 
     
-    i_results <- kable(i_results)
+    i_results <- kable(i_results,
+                       col.names = c(" ", names(i_results)[-1])
+                       )
     
     
     }
@@ -222,15 +225,25 @@ for (sec in sections) {
       universe <- metadata$Base[metadata$Item == i][1]
       
     cat('## ',label,' {.item-card}\n')
-    cat('##### ',universe,'\n')
+    cat('##### asked of ',universe,'\n')
     
     
     i_results <- results %>%
       filter(Variable %in% variables, Bivariate == "OVERALL") %>%
-      select(VariableLabel, VarLabel, Percent, LB, UB)
+      select(VariableLabel, VarLabel, Percent)
     
-    i_results <- kable(i_results)
-
+      pack_index <- i_results %>%
+        pull(VariableLabel) %>%              # get grouping variable as vector
+        rle() %>%                       # find run lengths (successive identical values)
+        { setNames(.$lengths, .$values) }   # named vector: group name → # of rows
+          
+    i_results <- kable(i_results, 
+                       col.names = c(names(i_results)[1], "", names(i_results)[-c(1, 2)])
+                       ) %>%
+                kable_styling(
+                  position = "left") %>%
+                pack_rows(index = pack_index) %>%
+      { suppressWarnings(remove_column(., columns = 1)) }
     }
   
   print(i_results)
