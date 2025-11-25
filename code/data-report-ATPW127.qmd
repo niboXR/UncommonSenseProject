@@ -8,13 +8,20 @@ format:
     toc: true
     toc-depth: 1
     toc-title: "Topics"
-    # code-tools: true          # Global code toggle
-    # code-fold: true             # Allow folding
-    # code-fold-default: false    # Hide code by default
-    # code-summary: "Show Code"   # Optional button label
+    code-fold: true             # Allow folding
+    code-fold-default: false    # Hide code by default
   pdf:
     echo: false
-    toc: true
+    toc: false #custom inserted TOC
+    header-includes:
+      - |
+        \usepackage{tocloft}
+        \setlength{\cftsecindent}{0pt}        % No first-line indent
+        \setlength{\cftsecnumwidth}{0em}     % Adjust number width as needed
+        % \setlength{\cftsubsecindent}{0pt}        % No first-line indent on subsection
+        \setlength{\cftsubsecnumwidth}{0em}     % Adjust number width as needed
+        %\setlength{\cftsubsubsecindent}{0pt}        % No first-line indent
+        \setlength{\cftsubsubsecnumwidth}{0em}     % Adjust number width as needed
 ---
 
 ```{r notes}
@@ -31,38 +38,34 @@ format:
 
 ```
 
-```{r get-data-and-metadata}
-#| message: false
-#| include: false
-#| echo: false
-library(haven) #needed to read_sav
-library(readxl)
-
-
-data <- read_sav("../data/ATPW127/ATPW127.sav") #get data
-
-
-metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, col_names = TRUE) #brings in codebook
-
-
-results <- read_xlsx("../data/results.xlsx")
-
-```
-
-This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population. 
+::: {.content-visible when-format="pdf"}
+This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population.
 
 {{< pagebreak >}}
 
+```{=latex}
+\tableofcontents
+```
+
+:::
+
+
 ```{r analysis}
-#| include: false
 #| eval: false
-#| echo: true
+#| code-summary: "This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population. **You can click anywhere on this text to see the code that generated these results**."
+#| message: false
+library(haven) #for reading sav file and label zapping
+library(readxl) #for reading metadata
 library(dplyr)
 library(tidyverse)
 library(srvyr)
 library(purrr)
-library(haven) #for label zapping
 library(labelled) #for labelling overall column
+
+
+data <- read_sav("../data/ATPW127/ATPW127.sav") #get source data
+metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, col_names = TRUE) #brings in altered codebook
+
 
 # Set analysis decisions
 vars <- metadata %>% 
@@ -163,18 +166,24 @@ library(writexl)
 
 write_xlsx(results, "../data/results.xlsx")
 
-# export results as formatted xlsx
-
 
 ```
 
-```{r print-findings}
-#| results: asis
-#| echo: false
 
+{{< pagebreak >}}
+
+```{r print-results}
+#| results: asis
+#| code-summary: "The results collected in the step above were formatted and rendered into pdf and html. **You can click anywhere here to see the code that rendered these results**."
+
+library(readxl) # for reading results
 suppressMessages(library(dplyr))
 library(knitr)
 suppressWarnings(suppressMessages(library(kableExtra)))
+
+results <- read_xlsx("../data/results.xlsx")
+metadata <- read_xlsx("../data/ATPmetadata.xlsx", sheet = "Codebook", skip = 2, col_names = TRUE) #brings in altered codebook
+
 
 sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
 
@@ -182,12 +191,14 @@ sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplem
 for (sec in sections) {
   
   cat('# ',sec,' {.section-collapse}\n')
-  # cat('::: {.callout-important collapse="true" icon="false"}\n') #starts callout note
-  # cat('## ',sec,'\n')
+
+  cat("{{< pagebreak >}}\n\n") #pagebreak for pdf docs
+
     
   prev_section <- "" #Creates object needed for loop logic
 
   items <- unique(metadata$Item[metadata$Section == sec & metadata$Item != "N/A"])
+
 
   for (i in items) { # For each survey item, print item details and render results
     
@@ -211,9 +222,13 @@ for (sec in sections) {
 
     
     i_results <- kable(i_results,
-                       col.names = c(" ", names(i_results)[-1])
+                      col.names = c(" ", names(i_results)[-1])
                        ) %>%
-                kable_styling(position = "left")
+                kable_styling(position = "left") %>%
+                footnote(
+                  general = paste0("SOURCE: ", i),
+                  general_title = "" #removes "Note:"
+                )
     
     
     }
@@ -246,100 +261,27 @@ for (sec in sections) {
                        ) %>%
                 kable_styling(
                   position = "left") %>%
-                pack_rows(index = pack_index)
+                pack_rows(index = pack_index) %>%
+                footnote(
+                  general = paste0("SOURCE: ", i),
+                  general_title = "" #removes "Note:
+                  
+                )
+
     }
   
   print(i_results)
-  
+ 
+  cat("{{< pagebreak >}}\n\n") #pagebreak for pdf docs
+ 
   } #closes item loop
   
-  # cat('\n::: \n\n')
 
 } #closes section loop
 
 ```
 
 :::: {.content-visible when-format="html"}
-```{r archived-tableau-findings}
-#| results: asis
-#| echo: false
-#| include: false
-#| eval: false
-
-sections <- unique(metadata$Section[!metadata$Section %in% c("PRELOAD", "Supplemental")])
-
-
-for (sec in sections) {
-  cat('# ',sec,' {.hidden-header}\n')
-  cat('::: {.callout-important collapse="true" icon="false"}\n') #starts callout note
-  cat('## ',sec,'\n')
-    
-  prev_section <- "" #Creates object needed for loop logic
-
-  items <- unique(metadata$Item[metadata$Section == sec & metadata$Item != "N/A"])
-
-  for (i in items) { # For each survey item, print item details and render results
-    
-    type_i <- metadata$Type[metadata$Item == i][1]
-
-    if (type_i %in% c("Single-choice", "Single-choice w/ correct")) {
-
-      # Write dynamic content using paste0
-      dash <- "BivariateDash"
-      variables <- metadata$Variable[metadata$Item == i][1]
-      variables <- paste(variables, collapse = ",")
-      label <- URLencode(metadata$Variable_Label[metadata$Item == i][1], reserved = FALSE)
-      label <- gsub(",", "|", label)
-      universe <- metadata$Base[metadata$Item == i][1]
-
-
-      height <- 500
-    }
-
-    if (type_i == "Series") {
-
-      # Write dynamic content using paste0
-      dash <- "SeriesDash"
-      variables <- unique(metadata$Variable[metadata$Item == i])
-      variables <- paste(variables, collapse = ",")
-      label <- URLencode(metadata$Question[metadata$Item == i][1], reserved = FALSE)
-      label <- gsub(",", "|", label)
-      universe <- metadata$Base[metadata$Item == i][1]
-
-      height <- 500
-    }
-    
-    src <- paste0("https://tableau.dsc.umich.edu/t/UM-Public/views/Testingembedding/",
-      dash, "?:embed=y&:showVizHome=no&:toolbar=no",
-      "&Variable=", variables,
-      "&LabelParameter=", label,
-      "&UniverseParameter=", universe)
-
-  cat('
-  <iframe
-  src="',src,'"
-    width="100%"
-    height="500"
-    loading="lazy"
-    allowfullscreen>
-  </iframe>
-  ')
-
-  } #closes item loop
-  
-  cat('\n::: \n\n')
-
-} #closes section loop
-
-```
-
-::: {.content-visible when-format="pdf"}
-```{r pdf-findings}
-
-# For each survey item, print item details and render results
-
-```
-:::
 
 ```{=html}
 <script>
@@ -362,9 +304,12 @@ document.addEventListener("DOMContentLoaded", () => {
       el = el.nextElementSibling;
     }
 
-    // Collapse all content initially
-    content.forEach(x => x.classList.add("collapsed-section"));
+    // Collapse all content initially -removed
+    // content.forEach(x => x.classList.add("collapsed-section"));
 
+    // Optional: mark headers as open by default
+    header.classList.add("open");
+    
     // Toggle visibility on click
     header.addEventListener("click", () => {
       const isOpen = header.classList.toggle("open");

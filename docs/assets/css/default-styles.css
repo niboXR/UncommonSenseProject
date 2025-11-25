@@ -83,16 +83,54 @@ h2.item-card.anchored {
 
 }
 
-.level2.item-card.collapsed-section {
+.level2.item-card {
   
   border-bottom: 1px dashed var(--accent-color);
-  padding-top: 0px;
+  padding-top: 30px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 30px;
 
 }
-  
+
+/**** 
+TABLE
+*****/
+
+/* Strong top border */
+table thead tr:first-child th,
+table thead tr:first-child td {
+  border-top: 2px solid #000 !important;
+}
+
+/* Strong border below the header row (above body) */
+table thead tr:last-child th,
+table thead tr:last-child td {
+  border-bottom: 2px solid #000 !important;
+}
+
+/* Strong bottom border below the table body (above footnotes) */
+table tbody tr:last-child td {
+  border-bottom: 2px solid #000 !important;
+}
+
+/* Remove all horizontal lines inside the table body */
+table tbody td {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+
+
+tfoot td {
+  border-bottom: none !important;
+}
+
+
+/*Code summary text*/
+details > summary {
+  color: #000 !important;
+}
 
 /*******
 *NAVBAR*

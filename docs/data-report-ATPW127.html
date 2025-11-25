@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Nick B">
-<meta name="dcterms.date" content="2025-11-22">
+<meta name="dcterms.date" content="2025-11-24">
 
 <title>American Trends Panel - Wave 127 – Uncommon Sense</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -157,7 +191,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 22, 2025</p>
+      <p class="date">November 24, 2025</p>
     </div>
   </div>
   
@@ -169,15 +203,236 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>This data report lets you independently explore the findings from Wave 127 of the American Trends Panel. The survey covered the internet, social media, and digital privacy and Black Lives Matter protests, the police, and patriotism. Results are weighted to reflect the U.S. adult population. <strong>You can click anywhere on this text to see the code that generated these results</strong>.</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven) <span class="co">#for reading sav file and label zapping</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co">#for reading metadata</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(srvyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(labelled) <span class="co">#for labelling overall column</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">"../data/ATPW127/ATPW127.sav"</span>) <span class="co">#get source data</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"../data/ATPmetadata.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Codebook"</span>, <span class="at">skip =</span> <span class="dv">2</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="co">#brings in altered codebook</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Set analysis decisions</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> metadata <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Item <span class="sc">!=</span> <span class="st">"N/A"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Variable) <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(Variable)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    var_labels <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(vars, <span class="cf">function</span>(var) { <span class="co"># Get bivariate labels</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    var_labels <span class="ot">&lt;-</span> <span class="fu">attr</span>(data[[var]], <span class="st">"labels"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    var_labels <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">Variable =</span> var,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">VarValue =</span> <span class="fu">as.numeric</span>(var_labels),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">VarLabel =</span> <span class="fu">names</span>(var_labels)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>bivars <span class="ot">&lt;-</span> metadata <span class="sc">%&gt;%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"SUP"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Variable <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_CDIVISION"</span>, <span class="co">#Too granular - specific analysis variable</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_HISP"</span>, <span class="co"># Accounted for in another variable </span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_HISP_ORIGIN"</span>, <span class="co">#Too granular - specific analysis variable</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_RACECMB"</span>, <span class="co"># Prefer F_RACETHNMOD</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_BIRTHPLACE"</span>, <span class="co">#Use if interesting findings by F_CITIZEN</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_MARITAL"</span>, <span class="co"># Specific analysis variable</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_RELIG"</span>,  <span class="co"># Too granular</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_ATTEND"</span>,  <span class="co"># Too granular</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_PARTYSUMIDEO_FINAL"</span>, <span class="co"># prefer F_PARTY_SUM_FINAL &amp; F_IDEO</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"F_INC_SDT1"</span> <span class="co"># Too granular</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>                      )) <span class="sc">%&gt;%</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(Variable) <span class="sc">%&gt;%</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(Variable)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>OVERALL <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co">#create overall column</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_label</span>(data<span class="sc">$</span>OVERALL) <span class="ot">&lt;-</span> <span class="st">"Overall"</span> <span class="co">#label overall column</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  data<span class="sc">$</span>OVERALL <span class="ot">&lt;-</span> <span class="fu">labelled</span>(data<span class="sc">$</span>OVERALL,</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"Overall"</span> <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>                           ))</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  bivars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"OVERALL"</span>, bivars)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    bivar_labels <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(bivars, <span class="cf">function</span>(bivar) { <span class="co"># Get bivariate labels</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    bivar_labels <span class="ot">&lt;-</span> <span class="fu">attr</span>(data[[bivar]], <span class="st">"labels"</span>)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    bivar_labels <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="at">Bivariate =</span> bivar,</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>        <span class="at">BivarValue =</span> <span class="fu">as.numeric</span>(bivar_labels),</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>        <span class="at">BivarLabel =</span> <span class="fu">names</span>(bivar_labels)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup analysis</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>svy_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> QKEY, <span class="at">weight =</span> WEIGHT_W127) <span class="co">#setup survey analysis</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Run analysis</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>combos <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">var =</span> vars, <span class="at">bivar =</span> bivars) <span class="co">#gets the combos</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> combos <span class="sc">%&gt;%</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">results =</span> <span class="fu">list</span>(</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>      svy_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(var, bivar)), <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span> <span class="co">#remove missing values</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(bivar, var)))) <span class="sc">%&gt;%</span> <span class="co">#set level of aggregation</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>        <span class="fu">summarise</span>(<span class="at">proportion =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>)) <span class="sc">%&gt;%</span> <span class="co">#survey analysis</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">Variable =</span> var, </span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>               <span class="at">Bivariate =</span> bivar,</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>               <span class="at">VariableLabel =</span> metadata<span class="sc">$</span>Label[metadata<span class="sc">$</span>Variable <span class="sc">==</span> var][<span class="dv">1</span>],</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>               <span class="at">BivariateLabel =</span> <span class="cf">if</span> (bivar <span class="sc">==</span> <span class="st">"OVERALL"</span>) {<span class="st">"Overall"</span>} <span class="cf">else</span> metadata<span class="sc">$</span>Label[metadata<span class="sc">$</span>Variable <span class="sc">==</span> bivar][<span class="dv">1</span>],               </span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>               <span class="at">Percent =</span> <span class="fu">round</span>(proportion<span class="sc">*</span><span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>               <span class="at">LB =</span> <span class="fu">round</span>(proportion_low<span class="sc">*</span><span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>               <span class="at">UB =</span> <span class="fu">round</span>(proportion_upp<span class="sc">*</span><span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>              ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="sc">-</span>proportion, <span class="sc">-</span>proportion_low, <span class="sc">-</span>proportion_upp) <span class="sc">%&gt;%</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rename</span>(<span class="at">VarValue =</span> var) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">VarValue =</span> <span class="fu">zap_labels</span>(VarValue)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>        <span class="fu">left_join</span>(var_labels, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"VarValue"</span>)) <span class="sc">%&gt;%</span>   </span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rename</span>(<span class="at">BivarValue =</span> bivar) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">BivarValue =</span> <span class="fu">zap_labels</span>(BivarValue)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>        <span class="fu">left_join</span>(bivar_labels, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Bivariate"</span>, <span class="st">"BivarValue"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(VariableLabel, Variable, VarValue, VarLabel, BivariateLabel, Bivariate, BivarValue, BivarLabel, Percent, LB, UB) </span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(results) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>var, <span class="sc">-</span>bivar)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co">#copy results to local file for preservation</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(writexl)</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(results, <span class="st">"../data/results.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <div style="page-break-after: always;"></div>
+<details class="code-fold">
+<summary>The results collected in the step above were formatted and rendered into pdf and html. <strong>You can click anywhere here to see the code that rendered these results</strong>.</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># for reading results</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">suppressMessages</span>(<span class="fu">library</span>(kableExtra)))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"../data/results.xlsx"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"../data/ATPmetadata.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"Codebook"</span>, <span class="at">skip =</span> <span class="dv">2</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span>) <span class="co">#brings in altered codebook</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>sections <span class="ot">&lt;-</span> <span class="fu">unique</span>(metadata<span class="sc">$</span>Section[<span class="sc">!</span>metadata<span class="sc">$</span>Section <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"PRELOAD"</span>, <span class="st">"Supplemental"</span>)])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sec <span class="cf">in</span> sections) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'# '</span>,sec,<span class="st">' {.section-collapse}</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"{{&lt; pagebreak &gt;}}</span><span class="sc">\n\n</span><span class="st">"</span>) <span class="co">#pagebreak for pdf docs</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  prev_section <span class="ot">&lt;-</span> <span class="st">""</span> <span class="co">#Creates object needed for loop logic</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  items <span class="ot">&lt;-</span> <span class="fu">unique</span>(metadata<span class="sc">$</span>Item[metadata<span class="sc">$</span>Section <span class="sc">==</span> sec <span class="sc">&amp;</span> metadata<span class="sc">$</span>Item <span class="sc">!=</span> <span class="st">"N/A"</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> items) { <span class="co"># For each survey item, print item details and render results</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    type_i <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Type[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (type_i <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Single-choice"</span>, <span class="st">"Single-choice w/ correct"</span>)) {</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      output <span class="ot">&lt;-</span> <span class="st">"VerticalBars"</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      variables <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Variable[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      variables <span class="ot">&lt;-</span> <span class="fu">paste</span>(variables, <span class="at">collapse =</span> <span class="st">","</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>      label <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Variable_Label[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>      universe <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Base[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">'## '</span>,label,<span class="st">' {.item-card}</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">'##### asked of '</span>,universe,<span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    i_results <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Variable <span class="sc">==</span> i <span class="sc">&amp;</span> Bivariate <span class="sc">==</span> <span class="st">"OVERALL"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(VarLabel, Percent)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    i_results <span class="ot">&lt;-</span> <span class="fu">kable</span>(i_results,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>                      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">" "</span>, <span class="fu">names</span>(i_results)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>                       ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                <span class="fu">kable_styling</span>(<span class="at">position =</span> <span class="st">"left"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                <span class="fu">footnote</span>(</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>                  <span class="at">general =</span> <span class="fu">paste0</span>(<span class="st">"SOURCE: "</span>, i),</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>                  <span class="at">general_title =</span> <span class="st">""</span> <span class="co">#removes "Note:"</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (type_i <span class="sc">==</span> <span class="st">"Series"</span>) {</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>      output <span class="ot">&lt;-</span> <span class="st">"StackedBar"</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>      variables <span class="ot">&lt;-</span> <span class="fu">unique</span>(metadata<span class="sc">$</span>Variable[metadata<span class="sc">$</span>Item <span class="sc">==</span> i])</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>      label <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Question[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>      universe <span class="ot">&lt;-</span> metadata<span class="sc">$</span>Base[metadata<span class="sc">$</span>Item <span class="sc">==</span> i][<span class="dv">1</span>]</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">'## '</span>,label,<span class="st">' {.item-card}</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">'##### asked of '</span>,universe,<span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    i_results <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Variable <span class="sc">%in%</span> variables, Bivariate <span class="sc">==</span> <span class="st">"OVERALL"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(VariableLabel, VarLabel, Percent)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>      pack_index <span class="ot">&lt;-</span> i_results <span class="sc">%&gt;%</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pull</span>(VariableLabel) <span class="sc">%&gt;%</span>              <span class="co"># get grouping variable as vector</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rle</span>() <span class="sc">%&gt;%</span>                       <span class="co"># find run lengths (successive identical values)</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        { <span class="fu">setNames</span>(.<span class="sc">$</span>lengths, .<span class="sc">$</span>values) }   <span class="co"># named vector: group name → # of rows</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    i_results <span class="ot">&lt;-</span> i_results <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    i_results <span class="ot">&lt;-</span> <span class="fu">kable</span>(i_results, </span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="fu">names</span>(i_results)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>                       ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>                <span class="fu">kable_styling</span>(</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>                  <span class="at">position =</span> <span class="st">"left"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>                <span class="fu">pack_rows</span>(<span class="at">index =</span> pack_index) <span class="sc">%&gt;%</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>                <span class="fu">footnote</span>(</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>                  <span class="at">general =</span> <span class="fu">paste0</span>(<span class="st">"SOURCE: "</span>, i),</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>                  <span class="at">general_title =</span> <span class="st">""</span> <span class="co">#removes "Note:</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i_results)</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"{{&lt; pagebreak &gt;}}</span><span class="sc">\n\n</span><span class="st">"</span>) <span class="co">#pagebreak for pdf docs</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>  } <span class="co">#closes item loop</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>} <span class="co">#closes section loop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <section id="internet" class="level1 section-collapse">
 <h1 class="section-collapse">Internet</h1>
+<div style="page-break-after: always;"></div>
 <section id="overall-how-confident-do-you-feel-using-computers-smartphones-or-other-electronic-devices-to-do-the-things-you-need-to-do-online" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="overall-how-confident-do-you-feel-using-computers-smartphones-or-other-electronic-devices-to-do-the-things-you-need-to-do-online">Overall, how confident do you feel using computers, smartphones, or other electronic devices to do the things you need to do online?</h2>
 <section id="asked-of-all-respondents" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -229,14 +484,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DIGCONF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="which-of-the-following-best-describes-you-even-if-neither-is-exactly-right-when-i-get-a-new-computer-smartphone-or-other-electronic-device-i-usually" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="which-of-the-following-best-describes-you-even-if-neither-is-exactly-right-when-i-get-a-new-computer-smartphone-or-other-electronic-device-i-usually">Which of the following best describes you, even if neither is exactly right? When I get a new computer, smartphone, or other electronic device, I usually…</h2>
 <section id="asked-of-all-respondents-1" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-1">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -272,14 +535,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: TECHHELP_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-have-a-smartphone" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-have-a-smartphone">Do you have a smartphone?</h2>
 <section id="asked-of-all-respondents-2" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-2">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -315,14 +586,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SMARTPHONE_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-use-social-media-sites-like-facebook-twitter-or-instagram" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-use-social-media-sites-like-facebook-twitter-or-instagram">Do you ever use social media sites like Facebook, Twitter, or Instagram?</h2>
 <section id="asked-of-internet-users" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -358,14 +637,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SNSUSE_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-well-do-you-think-each-of-the-following-statements-describes-social-media-social-media" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-well-do-you-think-each-of-the-following-statements-describes-social-media-social-media">How well do you think each of the following statements describes social media? Social media…</h2>
 <section id="asked-of-all-respondents-3" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-3">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -602,14 +889,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SM9_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="have-you-done-any-of-the-following-activities-on-social-media-in-the-past-year" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="have-you-done-any-of-the-following-activities-on-social-media-in-the-past-year">Have you done any of the following activities on social media in the past year?</h2>
 <section id="asked-of-social-media-users" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-social-media-users">asked of social media users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -766,14 +1061,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SM10_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-important-is-social-media-to-you-personally-when-it-comes-to-the-following-things" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-important-is-social-media-to-you-personally-when-it-comes-to-the-following-things">How important is social media to you personally when it comes to the following things?</h2>
 <section id="asked-of-social-media-users-1" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-social-media-users-1">asked of social media users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -920,17 +1223,26 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SM11_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 </section>
 <section id="digital-literacy" class="level1 section-collapse">
 <h1 class="section-collapse">Digital Literacy</h1>
+<div style="page-break-after: always;"></div>
 <section id="as-of-april-2023-which-of-the-following-companies-did-elon-musk-run" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="as-of-april-2023-which-of-the-following-companies-did-elon-musk-run">As of April 2023, which of the following companies did Elon Musk run?</h2>
 <section id="asked-of-all-respondents-4" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-4">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -990,14 +1302,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="if-a-website-uses-cookies-it-means-that-the-site-can" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="if-a-website-uses-cookies-it-means-that-the-site-can">If a website uses cookies, it means that the site can…</h2>
 <section id="asked-of-all-respondents-5" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-5">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1057,14 +1377,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="what-is-a-deepfake" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="what-is-a-deepfake">What is a “deepfake”?</h2>
 <section id="asked-of-all-respondents-6" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-6">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1124,14 +1452,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ3_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="in-2021-facebook-changed-its-company-name-to" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="in-2021-facebook-changed-its-company-name-to">In 2021, Facebook changed its company name to…</h2>
 <section id="asked-of-all-respondents-7" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-7">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1191,14 +1527,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ4_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="which-of-the-following-passwords-is-the-most-secure" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="which-of-the-following-passwords-is-the-most-secure">Which of the following passwords is the most secure?</h2>
 <section id="asked-of-all-respondents-8" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-8">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1258,14 +1602,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ5_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-do-large-language-models-such-as-chatgpt-come-up-with-answers-to-questions-users-submit" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-do-large-language-models-such-as-chatgpt-come-up-with-answers-to-questions-users-submit">How do large language models, such as ChatGPT, come up with answers to questions users submit?</h2>
 <section id="asked-of-all-respondents-9" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-9">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1325,14 +1677,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ7_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="some-websites-and-online-services-use-a-security-process-known-as-two-step-or-two-factor-authentication.-which-of-the-following-images-is-an-example-of-two-factor-authentication" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="some-websites-and-online-services-use-a-security-process-known-as-two-step-or-two-factor-authentication.-which-of-the-following-images-is-an-example-of-two-factor-authentication">Some websites and online services use a security process known as two-step or two-factor authentication. Which of the following images is an example of two-factor authentication?</h2>
 <section id="asked-of-all-respondents-10" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-10">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1392,14 +1752,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ8_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="websites-in-the-united-states-are-prohibited-from-collecting-data-online-from-children-under-what-age-without-a-parents-consent" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="websites-in-the-united-states-are-prohibited-from-collecting-data-online-from-children-under-what-age-without-a-parents-consent">Websites in the United States are prohibited from collecting data online from children under what age without a parent’s consent?</h2>
 <section id="asked-of-all-respondents-11" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-11">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1467,14 +1835,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ9_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="does-the-united-states-have-a-national-privacy-law-that-sets-common-standards-for-what-companies-can-do-with-all-data-their-products-and-services-collect" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="does-the-united-states-have-a-national-privacy-law-that-sets-common-standards-for-what-companies-can-do-with-all-data-their-products-and-services-collect">Does the United States have a national privacy law that sets common standards for what companies can do with all data their products and services collect?</h2>
 <section id="asked-of-all-respondents-12" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-12">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1518,17 +1894,26 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DKQ10_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 </section>
 <section id="digital-privacy" class="level1 section-collapse">
 <h1 class="section-collapse">Digital Privacy</h1>
+<div style="page-break-after: always;"></div>
 <section id="when-you-think-about-managing-your-privacy-online-do-you-feel" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="when-you-think-about-managing-your-privacy-online-do-you-feel">When you think about managing your privacy online, do you feel…</h2>
 <section id="asked-of-internet-users-1" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-1">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1685,14 +2070,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PRIVFEEL_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-worried-are-you-about-each-of-the-following" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-worried-are-you-about-each-of-the-following">How worried are you about each of the following?</h2>
 <section id="asked-of-all-respondents-13" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-13">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1839,14 +2232,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PRIVWRY_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-confident-are-you-in-knowing-what-steps-to-take-if-your-personal-information-is-hacked-or-stolen-online" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-confident-are-you-in-knowing-what-steps-to-take-if-your-personal-information-is-hacked-or-stolen-online">How confident are you in knowing what steps to take if your personal information is hacked or stolen online?</h2>
 <section id="asked-of-internet-users-2" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-2">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1898,14 +2299,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: CYBCONF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="in-the-last-12-months-have-you-had-someone" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="in-the-last-12-months-have-you-had-someone">In the last 12 months, have you had someone…</h2>
 <section id="asked-of-all-respondents-14" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-14">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2012,14 +2421,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DB1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-concerned-are-you-about-how-companies-are-using-the-data-they-collect-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-concerned-are-you-about-how-companies-are-using-the-data-they-collect-about-you">How concerned are you about how companies are using the data they collect about you?</h2>
 <section id="asked-of-all-respondents-15" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-15">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2071,14 +2488,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: CONCERNCO_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-control-do-you-think-you-have-over-the-data-that-companies-collect-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-control-do-you-think-you-have-over-the-data-that-companies-collect-about-you">How much control do you think you have over the data that companies collect about you?</h2>
 <section id="asked-of-all-respondents-16" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-16">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2130,14 +2555,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: CONTROLCO_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-do-you-feel-you-understand-what-companies-are-doing-with-the-data-they-collect-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-do-you-feel-you-understand-what-companies-are-doing-with-the-data-they-collect-about-you">How much do you feel you understand what companies are doing with the data they collect about you?</h2>
 <section id="asked-of-all-respondents-17" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-17">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2189,14 +2622,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: UNDERSTANDCO_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-concerned-are-you-about-how-the-government-is-using-the-data-it-collects-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-concerned-are-you-about-how-the-government-is-using-the-data-it-collects-about-you">How concerned are you about how the government is using the data it collects about you?</h2>
 <section id="asked-of-all-respondents-18" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-18">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2248,14 +2689,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: CONCERNGOV_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-control-do-you-think-you-have-over-the-data-the-government-collects-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-control-do-you-think-you-have-over-the-data-the-government-collects-about-you">How much control do you think you have over the data the government collects about you?</h2>
 <section id="asked-of-all-respondents-19" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-19">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2307,14 +2756,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: CONTROLGOV_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-do-you-feel-you-understand-what-the-government-is-doing-with-the-data-it-collects-about-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-do-you-feel-you-understand-what-the-government-is-doing-with-the-data-it-collects-about-you">How much do you feel you understand what the government is doing with the data it collects about you?</h2>
 <section id="asked-of-all-respondents-20" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-20">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2366,14 +2823,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: UNDERSTANDGOV_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-acceptable-do-you-think-each-of-the-following-uses-of-peoples-information-is" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-acceptable-do-you-think-each-of-the-following-uses-of-peoples-information-is">How acceptable do you think each of the following uses of people’s information is?</h2>
 <section id="asked-of-all-respondents-21" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-21">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2544,14 +3009,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: AIPRIV1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-often-do-you-click-agree-right-away-without-reading-what-these-policies-say" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-often-do-you-click-agree-right-away-without-reading-what-these-policies-say">How often do you click “agree” right away, without reading what these policies say?</h2>
 <section id="asked-of-internet-users-3" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-3">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2611,14 +3084,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PPREAD_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-effective-do-you-think-privacy-policies-are-as-a-way-for-companies-to-communicate-how-they-are-using-peoples-data" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-effective-do-you-think-privacy-policies-are-as-a-way-for-companies-to-communicate-how-they-are-using-peoples-data">How effective do you think privacy policies are as a way for companies to communicate how they are using people’s data?</h2>
 <section id="asked-of-internet-users-4" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-4">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2678,14 +3159,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PPEFF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="which-of-the-following-comes-closer-to-your-view-even-if-neither-is-exactly-right-privacy-policies-are" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="which-of-the-following-comes-closer-to-your-view-even-if-neither-is-exactly-right-privacy-policies-are">Which of the following comes closer to your view, even if neither is exactly right? Privacy policies are …</h2>
 <section id="asked-of-internet-users-5" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-5">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2721,14 +3210,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PPUSE_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-do-you-trust-that-leaders-of-social-media-companies-will" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-do-you-trust-that-leaders-of-social-media-companies-will">How much do you trust that leaders of social media companies will…</h2>
 <section id="asked-of-all-respondents-22" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-22">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2899,14 +3396,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SMLEAD_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-use-tiktok" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-use-tiktok">Do you use TikTok?</h2>
 <section id="asked-of-all-respondents-23" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-23">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -2942,14 +3447,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: TIKTOK_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-big-of-a-threat-do-you-think-tiktok-is-to-national-security-in-the-united-states" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-big-of-a-threat-do-you-think-tiktok-is-to-national-security-in-the-united-states">How big of a threat do you think TikTok is to national security in the United States?</h2>
 <section id="asked-of-all-respondents-24" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-24">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3001,14 +3514,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: TIKTHRT_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-concerned-are-you-about-how-tiktok-uses-data-it-collects-from-its-users" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-concerned-are-you-about-how-tiktok-uses-data-it-collects-from-its-users">How concerned are you about how TikTok uses data it collects from its users?</h2>
 <section id="asked-of-all-respondents-25" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-25">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3060,14 +3581,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: TIKDATA_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-do-each-of-the-following" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-do-each-of-the-following">Do you ever do each of the following?</h2>
 <section id="asked-of-all-respondents-26" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-26">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3137,14 +3666,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: ONLTSK_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-use-public-wifi-in-places-such-as-cafes-libraries-or-stores-to-do-each-of-the-following" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-use-public-wifi-in-places-such-as-cafes-libraries-or-stores-to-do-each-of-the-following">Do you ever use public WiFi in places such as cafes, libraries, or stores to do each of the following?</h2>
 <section id="asked-of-online-shoppers" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-online-shoppers">asked of online shoppers</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3214,14 +3751,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PUBWIFI_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="have-you-ever-stopped-using-a-digital-device-website-or-app-because-you-were-worried-about-how-your-personal-information-was-being-used" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="have-you-ever-stopped-using-a-digital-device-website-or-app-because-you-were-worried-about-how-your-personal-information-was-being-used">Have you ever stopped using a digital device, website or app because you were worried about how your personal information was being used?</h2>
 <section id="asked-of-internet-users-6" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-6">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3257,14 +3802,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DIGHABT1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-do-any-of-the-following-to-manage-your-privacy-online" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-do-any-of-the-following-to-manage-your-privacy-online">Do you ever do any of the following to manage your privacy online?</h2>
 <section id="asked-of-internet-users-7" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-7">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3392,14 +3945,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: DIGHABT2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-feel" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-feel">Do you ever feel…</h2>
 <section id="asked-of-internet-users-8" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-8">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3469,14 +4030,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PWFEEL_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="when-picking-a-password-do-you-generally-create-one-that-you-think-will-be" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="when-picking-a-password-do-you-generally-create-one-that-you-think-will-be">When picking a password, do you generally create one that you think will be…</h2>
 <section id="asked-of-internet-users-9" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-9">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3512,14 +4081,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PWPREF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-use-a-password-manager-such-as-lastpass-or-icloud-keychain-to-help-keep-track-of-your-online-passwords" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-use-a-password-manager-such-as-lastpass-or-icloud-keychain-to-help-keep-track-of-your-online-passwords">Do you use a password manager, such as LastPass or iCloud Keychain, to help keep track of your online passwords?</h2>
 <section id="asked-of-internet-users-10" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-10">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3555,14 +4132,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PWMAN_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="in-thinking-about-how-you-access-your-different-online-accounts-how-often-do-you" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="in-thinking-about-how-you-access-your-different-online-accounts-how-often-do-you">In thinking about how you access your different online accounts, how often do you…</h2>
 <section id="asked-of-internet-users-11" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-internet-users-11">asked of internet users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3733,14 +4318,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PWEXP_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-use-a-passcode-fingerprint-face-recognition-or-other-security-feature-to-unlock-your-smartphone" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-use-a-passcode-fingerprint-face-recognition-or-other-security-feature-to-unlock-your-smartphone">Do you use a passcode, fingerprint, face recognition, or other security feature to unlock your smartphone?</h2>
 <section id="asked-of-smartphone-users" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-smartphone-users">asked of smartphone users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3776,14 +4369,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SPACCESS_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-do-you-typically-handle-software-updates-for-each-of-the-following" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-do-you-typically-handle-software-updates-for-each-of-the-following">How do you typically handle software updates for each of the following?</h2>
 <section id="asked-of-smartphone-users-1" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-smartphone-users-1">asked of smartphone users</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3885,14 +4486,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: UPDATEPREF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-do-you-feel-you-understand-the-laws-and-regulations-that-are-currently-in-place-to-protect-your-data-privacy" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-do-you-feel-you-understand-the-laws-and-regulations-that-are-currently-in-place-to-protect-your-data-privacy">How much do you feel you understand the laws and regulations that are currently in place to protect your data privacy?</h2>
 <section id="asked-of-all-respondents-27" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-27">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3944,14 +4553,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: PRIVACYREG_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-government-regulation-do-you-think-there-should-be-of-what-companies-can-do-with-their-customers-personal-information" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-government-regulation-do-you-think-there-should-be-of-what-companies-can-do-with-their-customers-personal-information">How much government regulation do you think there should be of what companies can do with their customers’ personal information?</h2>
 <section id="asked-of-all-respondents-28" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-28">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -3995,14 +4612,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: GOVREGV1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-concerned-are-you-about-each-of-the-following" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-concerned-are-you-about-each-of-the-following">How concerned are you about each of the following?</h2>
 <section id="asked-of-all-respondents-29" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-29">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4149,14 +4774,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: KIDPRIV1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-responsibility-do-you-think-each-of-the-following-should-have-for-protecting-childrens-online-privacy" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-responsibility-do-you-think-each-of-the-following-should-have-for-protecting-childrens-online-privacy">How much responsibility do you think each of the following should have for protecting children’s online privacy?</h2>
 <section id="asked-of-all-respondents-30" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-30">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4303,14 +4936,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: KIDPRIV2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-acceptable-do-you-think-it-is-for-law-enforcement-to-do-each-of-the-following-during-a-criminal-investigation" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-acceptable-do-you-think-it-is-for-law-enforcement-to-do-each-of-the-following-during-a-criminal-investigation">How acceptable do you think it is for law enforcement to do each of the following during a criminal investigation?</h2>
 <section id="asked-of-form-1-respondents" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-form-1-respondents">asked of form 1 respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4534,14 +5175,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: ACCPTLWF1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-acceptable-do-you-think-it-is-for-law-enforcement-to-do-each-of-the-following-during-a-criminal-investigation-where-public-safety-is-at-risk" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-acceptable-do-you-think-it-is-for-law-enforcement-to-do-each-of-the-following-during-a-criminal-investigation-where-public-safety-is-at-risk">How acceptable do you think it is for law enforcement to do each of the following during a criminal investigation where public safety is at risk?</h2>
 <section id="asked-of-form-2-respondents" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-form-2-respondents">asked of form 2 respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4765,14 +5414,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: ACCPTLWF2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-have-you-heard-or-read-about-ai" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-have-you-heard-or-read-about-ai">How much have you heard or read about AI?</h2>
 <section id="asked-of-all-respondents-31" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-31">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4816,14 +5473,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: AI_HEARD_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="as-companies-use-ai-to-collect-and-analyze-personal-details-and-information-do-you-think-this-information-will-be-used-in-ways" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="as-companies-use-ai-to-collect-and-analyze-personal-details-and-information-do-you-think-this-information-will-be-used-in-ways">As companies use AI to collect and analyze personal details and information, do you think this information will be used in ways…</h2>
 <section id="asked-of-heard-of-ai" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-heard-of-ai">asked of heard of AI</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4994,14 +5659,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: AIPRIV2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-do-you-trust-companies-to-make-responsible-decisions-about-how-they-use-ai-in-their-products" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-do-you-trust-companies-to-make-responsible-decisions-about-how-they-use-ai-in-their-products">How much do you trust companies to make responsible decisions about how they use AI in their products?</h2>
 <section id="asked-of-heard-of-ai-1" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-heard-of-ai-1">asked of heard of AI</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5061,14 +5734,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: AIPRIV3_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="are-you-the-parent-or-guardian-of-any-children-under-age-18" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="are-you-the-parent-or-guardian-of-any-children-under-age-18">Are you the parent or guardian of any children under age 18?</h2>
 <section id="asked-of-all-respondents-32" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-32">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5104,17 +5785,26 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: KIDS1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 </section>
 <section id="patriotism" class="level1 section-collapse">
 <h1 class="section-collapse">Patriotism</h1>
+<div style="page-break-after: always;"></div>
 <section id="thinking-about-what-it-means-to-be-a-good-citizen-how-important-is-it-to-display-the-american-flag" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="thinking-about-what-it-means-to-be-a-good-citizen-how-important-is-it-to-display-the-american-flag">Thinking about what it means to be a good citizen, how important is it to display the American flag?</h2>
 <section id="asked-of-all-respondents-33" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-33">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5174,14 +5864,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: FLAG1_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-proud-if-at-all-does-the-american-flag-make-you-feel" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-proud-if-at-all-does-the-american-flag-make-you-feel">How proud, if at all, does the American flag make you feel?</h2>
 <section id="asked-of-all-respondents-34" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-34">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5241,14 +5939,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: FLAG2_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-display-the-american-flag-outside-your-home-or-on-your-car" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-display-the-american-flag-outside-your-home-or-on-your-car">Do you ever display the American flag outside your home or on your car?</h2>
 <section id="asked-of-all-respondents-35" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-35">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5292,14 +5998,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: FLAG3A_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="do-you-ever-display-any-flags-other-than-the-american-flag-outside-your-home-or-on-your-car" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="do-you-ever-display-any-flags-other-than-the-american-flag-outside-your-home-or-on-your-car">Do you ever display any flags other than the American flag outside your home or on your car?</h2>
 <section id="asked-of-all-respondents-36" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-36">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5343,14 +6057,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: FLAG3B_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-many-of-your-neighbors-if-any-display-the-american-flag-outside-their-homes-or-on-their-cars" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-many-of-your-neighbors-if-any-display-the-american-flag-outside-their-homes-or-on-their-cars">How many of your neighbors, if any, display the American flag outside their homes or on their cars?</h2>
 <section id="asked-of-all-respondents-37" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-37">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5402,17 +6124,26 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: FLAG4_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 </section>
 <section id="black-lives-matter" class="level1 section-collapse">
 <h1 class="section-collapse">Black Lives Matter</h1>
+<div style="page-break-after: always;"></div>
 <section id="have-you-ever" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="have-you-ever">Have you ever…</h2>
 <section id="asked-of-all-respondents-38" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-38">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5540,14 +6271,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: SMBLM_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-much-of-a-problem-do-you-think-police-violence-against-black-people-is-in-the-united-states-today" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-much-of-a-problem-do-you-think-police-violence-against-black-people-is-in-the-united-states-today">How much of a problem do you think police violence against Black people is in the United States today?</h2>
 <section id="asked-of-all-respondents-39" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-all-respondents-39">asked of all respondents</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5591,14 +6330,22 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: POLPROB_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="how-effective-do-you-think-each-of-the-following-is-for-bringing-attention-to-police-violence-against-black-people-in-the-united-states" class="level2 item-card">
 <h2 class="item-card anchored" data-anchor-id="how-effective-do-you-think-each-of-the-following-is-for-bringing-attention-to-police-violence-against-black-people-in-the-united-states">How effective do you think each of the following is for bringing attention to police violence against Black people in the United States?</h2>
 <section id="asked-of-those-who-said-police-violence-is-a-problem" class="level5">
 <h5 class="anchored" data-anchor-id="asked-of-those-who-said-police-violence-is-a-problem">asked of those who said police violence is a problem</h5>
-<table class="table" style="">
+<table class="table" style="border-bottom: 0;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5716,7 +6463,15 @@ Refused
 </td>
 </tr>
 </tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> SOURCE: MEDPOLEFF_W127
+</td>
+</tr>
+</tfoot>
 </table>
+<div style="page-break-after: always;"></div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -5737,9 +6492,12 @@ document.addEventListener("DOMContentLoaded", () => {
       el = el.nextElementSibling;
     }
 
-    // Collapse all content initially
-    content.forEach(x => x.classList.add("collapsed-section"));
+    // Collapse all content initially -removed
+    // content.forEach(x => x.classList.add("collapsed-section"));
 
+    // Optional: mark headers as open by default
+    header.classList.add("open");
+    
     // Toggle visibility on click
     header.addEventListener("click", () => {
       const isOpen = header.classList.toggle("open");
